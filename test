@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2 "In Fashion" — Interactive Practice</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/latin-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/latin-600-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/latin-800-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/space-grotesk@latest/latin-700-normal.css">
+<style>
+:root{
+  --bg:#f5f7fc; --text:#1b2340; --muted:#5b6486;
+  --card:#ffffff; --stroke:#e6eaf5; --stroke2:#dfe5f2;
+  --ok:#10b981; --warn:#f59e0b; --err:#ef4444;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Manrope',system-ui,sans-serif; background:var(--bg); color:var(--text);
+  min-height:100vh; padding:28px 16px 80px; overflow-x:hidden;
+}
+body::before,body::after{
+  content:''; position:fixed; border-radius:50%; filter:blur(110px); z-index:-1;
+}
+body::before{width:520px;height:520px;background:rgba(236,72,153,.12);top:-160px;left:-140px}
+body::after{width:460px;height:460px;background:rgba(99,102,241,.12);bottom:-160px;right:-120px}
+
+.wrap{max-width:1080px;margin:0 auto}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:rgba(255,255,255,.8); border:1px solid var(--stroke); border-radius:28px;
+  padding:40px 36px; backdrop-filter:blur(20px); position:relative; overflow:hidden;
+  box-shadow:0 24px 60px -34px rgba(28,35,64,.3);
+}
+.hero h1{
+  font-family:'Space Grotesk',sans-serif; font-size:clamp(1.7rem,4vw,2.6rem); letter-spacing:-.5px;
+  background:linear-gradient(90deg,#db2777,#4f46e5,#0d9488);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero p.sub{color:var(--muted);margin-top:6px;font-size:1.02rem}
+.hero-row{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap;margin-top:26px}
+.field label{display:block;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:700}
+.inp{
+  background:#fff; border:1px solid var(--stroke2); border-radius:14px;
+  padding:12px 16px; color:var(--text); font:inherit; width:100%; transition:.2s;
+}
+.inp:focus{outline:none;border-color:#ec4899;box-shadow:0 0 0 4px rgba(236,72,153,.14)}
+.progress-wrap{flex:1;min-width:220px}
+.pbar{height:10px;border-radius:99px;background:var(--stroke);overflow:hidden}
+.pfill{
+  height:100%;width:0%;border-radius:99px;transition:width .6s cubic-bezier(.22,1,.36,1);
+  background:linear-gradient(90deg,#10b981,#f59e0b,#f97316,#ec4899);
+}
+.ptext{font-size:.85rem;color:var(--muted);margin-top:8px;font-weight:600}
+
+/* ---------- TABS ---------- */
+.tabs{
+  display:flex;gap:8px;flex-wrap:wrap;margin:26px 0;padding:8px;
+  background:rgba(255,255,255,.85);border:1px solid var(--stroke);border-radius:20px;backdrop-filter:blur(20px);
+  position:sticky;top:12px;z-index:50;box-shadow:0 14px 40px -26px rgba(28,35,64,.35);
+}
+.tab{
+  flex:1;min-width:130px;border:0;border-radius:14px;padding:14px 10px;cursor:pointer;
+  background:transparent;color:var(--muted);font:inherit;font-weight:700;font-size:.88rem;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:.25s;
+}
+.tab:hover{background:#eef1f9;color:var(--text)}
+.tab.active{background:linear-gradient(135deg,var(--ta),var(--tb));color:#fff;box-shadow:0 10px 26px -10px var(--ta)}
+.tab .tick{display:none;font-size:.8rem}
+.tab.done .tick{display:inline}
+
+/* ---------- BLOCKS & CARDS ---------- */
+.block{display:none}
+.block.active{display:block}
+.block-head{margin:8px 4px 22px}
+.block-head h2{font-family:'Space Grotesk',sans-serif;font-size:1.6rem;display:flex;align-items:center;gap:12px}
+.block-head .dot{width:14px;height:14px;border-radius:50%;background:var(--acc);box-shadow:0 0 16px var(--acc)}
+.block-head p{color:var(--muted);margin-top:6px}
+
+.card{
+  --acc:#6366f1; --acc2:#4f46e5;
+  background:var(--card); border:1px solid var(--stroke); border-radius:22px;
+  padding:26px; margin-bottom:22px; position:relative; overflow:hidden;
+  box-shadow:0 14px 44px -28px rgba(28,35,64,.3);
+  animation:rise .5s both;
+}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(var(--acc),var(--acc2))}
+.card[data-a="g"]{--acc:#10b981;--acc2:#0d9488}
+.card[data-a="y"]{--acc:#f59e0b;--acc2:#d97706}
+.card[data-a="o"]{--acc:#f97316;--acc2:#ef4444}
+.card[data-a="p"]{--acc:#ec4899;--acc2:#a855f7}
+.card[data-a="i"]{--acc:#6366f1;--acc2:#4f46e5}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.card-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.exnum{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;
+  padding:6px 12px;border-radius:10px;
+}
+.card-top h3{font-size:1.15rem}
+.badge{
+  margin-left:auto;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;
+  padding:5px 10px;border-radius:99px;border:1px solid var(--stroke2);color:var(--muted);
+}
+.badge.auto{color:#0e7490;border-color:rgba(14,116,144,.35);background:rgba(14,116,144,.06)}
+.badge.write{color:#a21caf;border-color:rgba(162,28,175,.3);background:rgba(162,28,175,.06)}
+.badge.drag{color:#d97706;border-color:rgba(217,119,6,.35);background:rgba(217,119,6,.06)}
+
+.instr{
+  background:#f7f9fe;border:1px dashed var(--stroke2);border-radius:14px;
+  padding:12px 16px;color:var(--muted);font-size:.95rem;margin-bottom:18px;
+}
+.instr b{color:var(--text)}
+
+/* matching */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mitem{
+  background:#fff;border:1px solid var(--stroke2);border-radius:14px;
+  padding:12px 14px;cursor:pointer;transition:.2s;font-size:.95rem;
+}
+.mitem:hover{transform:translateY(-2px);border-color:var(--acc);box-shadow:0 8px 20px -14px rgba(28,35,64,.4)}
+.mitem.sel{background:var(--acc);color:#fff;border-color:transparent;font-weight:700}
+.mitem.paired{border-color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc)}
+.mitem.ok{border-color:var(--ok);background:#ecfdf5;color:#065f46}
+.mitem.bad{border-color:var(--err);background:#fef2f2;color:#991b1b}
+
+/* inputs */
+.line{background:#f8fafd;border:1px solid var(--stroke);border-radius:14px;padding:14px 16px;margin-bottom:12px;font-size:.98rem;line-height:1.7}
+.wide{width:100%;margin-top:8px}
+textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
+
+/* drag and drop */
+.word-bank{display:flex;flex-wrap:wrap;gap:10px;background:#fffbeb;border:1px dashed #fde68a;border-radius:16px;padding:16px;margin-bottom:20px;min-height:70px;align-items:center;justify-content:center}
+.drag-word{
+  padding:8px 16px;border-radius:99px;background:#fff;border:1px solid #fcd34d;color:#92400e;
+  cursor:grab;font-weight:700;font-size:.92rem;user-select:none;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.05);
+}
+.drag-word:active{cursor:grabbing;transform:scale(1.05)}
+.drag-word.placed{opacity:.3;pointer-events:none}
+.drop-text{line-height:2.2;font-size:1.05rem;background:#f8fafd;border:1px solid var(--stroke);border-radius:14px;padding:20px}
+.drop-zone{
+  display:inline-block;min-width:120px;height:32px;border-bottom:2px dashed var(--acc);
+  border-radius:6px;vertical-align:middle;margin:0 4px;transition:.2s;background:rgba(255,255,255,.5);
+}
+.drop-zone.hover{background:rgba(236,72,153,.1);border-color:#ec4899}
+.drop-zone.filled{border-bottom-style:solid;background:#fff;color:var(--text);font-weight:600;padding:0 12px;line-height:30px;cursor:pointer}
+.drop-zone.ok{border-color:var(--ok);background:#ecfdf5;color:#065f46}
+.drop-zone.bad{border-color:var(--err);background:#fef2f2;color:#991b1b}
+
+/* chips / sorting */
+.bank{display:flex;flex-wrap:wrap;gap:10px;background:#f8fafd;border:1px solid var(--stroke);border-radius:16px;padding:14px;margin-bottom:16px;min-height:64px}
+.chip{
+  padding:9px 18px;border-radius:99px;background:#fff;border:1px solid var(--stroke2);
+  cursor:pointer;user-select:none;transition:.2s;font-weight:600;font-size:.92rem;color:var(--text);
+}
+.chip:hover{transform:translateY(-2px);border-color:var(--acc)}
+.chip.sel{background:var(--acc);color:#fff;border-color:transparent;box-shadow:0 8px 20px -8px var(--acc)}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.dropcol{border:2px dashed #d7ddec;border-radius:18px;padding:16px;min-height:200px;background:#fbfcfe;transition:.2s}
+.dropcol.hot{border-color:var(--acc);background:#f4f7ff}
+.dropcol h4{text-align:center;padding:10px;border-radius:12px;color:#fff;margin-bottom:12px;font-size:.9rem}
+.dropcol.c1 h4{background:linear-gradient(135deg,#0ea5e9,#0284c7)}
+.dropcol.c2 h4{background:linear-gradient(135deg,#8b5cf6,#7c3aed)}
+.dropcol.c3 h4{background:linear-gradient(135deg,#f43f5e,#e11d48)}
+.drop{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+
+/* mc */
+.mcq{background:#f8fafd;border:1px solid var(--stroke);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.opts{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.opt{
+  padding:8px 18px;border-radius:12px;border:1px solid var(--stroke2);background:#fff;
+  cursor:pointer;transition:.2s;font-weight:600;font-size:.92rem;color:var(--text);
+}
+.opt:hover{border-color:var(--acc)}
+.opt.sel{background:var(--acc);color:#fff;border-color:transparent}
+.opt.ok{border-color:var(--ok);background:#ecfdf5;color:#065f46}
+.opt.bad{border-color:var(--err);background:#fef2f2;color:#991b1b}
+
+/* buttons */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{
+  border:0;border-radius:14px;padding:12px 24px;font:inherit;font-weight:800;font-size:.93rem;
+  cursor:pointer;transition:.25s;letter-spacing:.02em;
+}
+.btn.primary{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;box-shadow:0 10px 26px -10px var(--acc)}
+.btn.primary:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.btn.primary:active{transform:scale(.97)}
+.btn.ghost{background:#fff;color:var(--text);border:1px solid var(--stroke2)}
+.btn.ghost:hover{background:#f2f5fb}
+
+/* feedback */
+.fb{display:none;margin-top:14px;padding:13px 16px;border-radius:14px;font-size:.95rem;font-weight:600}
+.fb.show{display:block;animation:rise .3s}
+.fb.ok{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
+.fb.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+.fb.err{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+
+/* extras */
+.example{background:#fdf2f8;border:1px solid #fbcfe8;border-radius:14px;padding:14px 16px;margin:14px 0;font-size:.95rem;line-height:1.7;color:#9d174d}
+.example b{color:#be185d}
+.pq{background:#fffbeb;border:1px solid #fde68a;border-radius:16px;padding:18px;margin-top:18px}
+.pq h4{margin-bottom:12px;color:#92400e}
+.pq label{display:block;font-size:.92rem;margin:10px 0 6px;color:var(--text)}
+.hidden{display:none}
+
+/* image task */
+.img-placeholder{
+  width:100%;height:500px;border:3px dashed #cbd5e1;border-radius:20px;background:#f1f5f9;
+  display:flex;align-items:center;justify-content:center;text-align:center;color:#64748b;
+  font-size:1.1rem;font-weight:600;margin-bottom:20px;overflow:hidden;position:relative;
+}
+.img-placeholder img{width:100%;height:100%;object-fit:contain;position:absolute;top:0;left:0}
+.word-box-inline{display:flex;flex-wrap:wrap;gap:8px;background:#f1f5f9;padding:12px;border-radius:12px;margin-bottom:12px}
+.word-box-inline span{background:#fff;padding:4px 12px;border-radius:8px;font-size:.85rem;font-weight:600;border:1px solid var(--stroke2)}
+
+/* report */
+.checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin:18px 0}
+.ck{
+  display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;
+  background:#fff;border:1px solid var(--stroke);font-size:.9rem;font-weight:600;color:var(--muted);
+}
+.ck .box{width:20px;height:20px;border-radius:6px;border:2px solid var(--stroke2);display:grid;place-items:center;font-size:.75rem;flex:none}
+.ck.done{color:#065f46;border-color:#a7f3d0;background:#ecfdf5}
+.ck.done .box{background:var(--ok);border-color:var(--ok);color:#fff}
+#reportPanel{display:none;margin-top:20px}
+#reportPanel.show{display:block;animation:rise .4s}
+#reportPre{
+  white-space:pre-wrap;background:#f6f8fc;border:1px solid var(--stroke);border-radius:16px;
+  padding:20px;font-family:ui-monospace,'Cascadia Mono',Consolas,monospace;font-size:.86rem;line-height:1.65;color:#334155;
+}
+
+@media(max-width:760px){
+  .mgrid,.cols{grid-template-columns:1fr}
+  .tabs{position:static}
+  .hero{padding:28px 22px}
+}
+@media print{
+  body{background:#fff;color:#000;padding:0}
+  body::before,body::after,.hero,.tabs,.block:not(#b5),.actions,.checklist,.fb{display:none!important}
+  #reportPanel{display:block!important}
+  #reportPre{background:#fff;color:#000;border:1px solid #999}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <h1>Unit 2 · In Fashion</h1>
+    <p class="sub">Interactive Practice · Level A2+ / B1 · Vocabulary → Past Simple → Adverbs → Final Challenge</p>
+    <div class="hero-row">
+      <div class="field" style="flex:1;min-width:220px">
+        <label for="studentName">Student name</label>
+        <input class="inp" id="studentName" placeholder="Type your name…">
+      </div>
+      <div class="progress-wrap">
+        <div class="pbar"><div class="pfill" id="progFill"></div></div>
+        <div class="ptext" id="progText">0 / 11 tasks completed</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <nav class="tabs">
+    <button class="tab active" data-t="b1" style="--ta:#10b981;--tb:#0d9488">🟢 Vocabulary <span class="tick">✓</span></button>
+    <button class="tab" data-t="b2" style="--ta:#f59e0b;--tb:#d97706">🟡 Past Simple <span class="tick">✓</span></button>
+    <button class="tab" data-t="b3" style="--ta:#f97316;--tb:#ef4444">🟠 Adverbs <span class="tick">✓</span></button>
+    <button class="tab" data-t="b4" style="--ta:#ec4899;--tb:#a855f7">🔴 Challenge <span class="tick">✓</span></button>
+    <button class="tab" data-t="b5" style="--ta:#6366f1;--tb:#4f46e5">📊 Report <span class="tick">✓</span></button>
+  </nav>
+
+  <!-- ============ BLOCK 1 ============ -->
+  <section class="block active" id="b1">
+    <div class="block-head" style="--acc:#10b981">
+      <h2><span class="dot"></span>Block 1 · Vocabulary</h2>
+      <p>Goal: use advanced B1 vocabulary to describe clothes, styles, and fashion habits.</p>
+    </div>
+
+    <article class="card" data-a="g">
+      <div class="card-top"><span class="exnum">EX 1.1</span><h3>Match the Meaning</h3><span class="badge auto">auto-check</span></div>
+      <p class="instr"><b>Instructions:</b> click a word on the left, then click its definition on the right. These 12 words will help you in the next exercises!</p>
+      <div class="mgrid">
+        <div id="mLeft">
+          <div class="mitem" data-k="1">1. loose-fitting</div>
+          <div class="mitem" data-k="2">2. smart (clothes)</div>
+          <div class="mitem" data-k="3">3. trendy</div>
+          <div class="mitem" data-k="4">4. second-hand</div>
+          <div class="mitem" data-k="5">5. well-dressed</div>
+          <div class="mitem" data-k="6">6. casual</div>
+          <div class="mitem" data-k="7">7. to match</div>
+          <div class="mitem" data-k="8">8. to borrow</div>
+          <div class="mitem" data-k="9">9. fashionable</div>
+          <div class="mitem" data-k="10">10. skinny (jeans)</div>
+          <div class="mitem" data-k="11">11. brand new</div>
+          <div class="mitem" data-k="12">12. uncomfortable</div>
+        </div>
+        <div id="mRight">
+          <div class="mitem" data-k="6">A. relaxed and comfortable, not formal</div>
+          <div class="mitem" data-k="1">B. not tight, comfortable and a bit baggy</div>
+          <div class="mitem" data-k="11">C. completely new, never used before</div>
+          <div class="mitem" data-k="4">D. not new, previously owned by someone else</div>
+          <div class="mitem" data-k="7">E. to look good together (e.g., colours or styles)</div>
+          <div class="mitem" data-k="2">F. formal and elegant, suitable for work or a party</div>
+          <div class="mitem" data-k="12">G. making you feel physical pain or annoyance</div>
+          <div class="mitem" data-k="3">H. very fashionable at the moment</div>
+          <div class="mitem" data-k="8">I. to take and use something with permission, planning to return it</div>
+          <div class="mitem" data-k="10">J. very tight and narrow</div>
+          <div class="mitem" data-k="5">K. wearing stylish and appropriate clothes</div>
+          <div class="mitem" data-k="9">L. popular at a particular time</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="check11">Check answers</button>
+        <button class="btn ghost" id="reset11">Reset</button>
+      </div>
+      <div class="fb" id="fb11"></div>
+    </article>
+
+    <article class="card" data-a="g">
+      <div class="card-top"><span class="exnum">EX 1.2</span><h3>Vocabulary Upgrade</h3><span class="badge write">writing</span></div>
+      <p class="instr"><b>Instructions:</b> rewrite the A2 sentences below to sound more advanced (B1). <b>No hints this time!</b> Go back to <b>Exercise 1.1</b>, find the best B1 word or phrase for each sentence and use it in your new version. Your answers are saved for the teacher's report.</p>
+      <div class="example"><b>Example:</b> I like clothes that are not tight. → <i>I prefer loose-fitting clothes.</i></div>
+      <div class="line">1. My sister always wears beautiful and formal clothes to work.
+        <input class="inp wide" id="o12a" data-open placeholder="Your B1 sentence…"></div>
+      <div class="line">2. I don't like buying old clothes that other people wore.
+        <input class="inp wide" id="o12b" data-open placeholder="Your B1 sentence…"></div>
+      <div class="line">3. These shoes hurt my feet, they are not nice to wear.
+        <input class="inp wide" id="o12c" data-open placeholder="Your B1 sentence…"></div>
+      <div class="line">4. My blue shirt looks good with my black trousers.
+        <input class="inp wide" id="o12d" data-open placeholder="Your B1 sentence…"></div>
+      <div class="line">5. Can I use your jacket for the party? I will give it back tomorrow.
+        <input class="inp wide" id="o12e" data-open placeholder="Your B1 sentence…"></div>
+      <div class="line">6. Everyone is wearing this type of hat right now, it is very popular.
+        <input class="inp wide" id="o12f" data-open placeholder="Your B1 sentence…"></div>
+      <div class="line">7. I only wear relaxed clothes like jeans and T-shirts at weekends.
+        <input class="inp wide" id="o12g" data-open placeholder="Your B1 sentence…"></div>
+      <div class="line">8. I bought this phone yesterday, no one has used it before me.
+        <input class="inp wide" id="o12h" data-open placeholder="Your B1 sentence…"></div>
+      <div class="actions">
+        <button class="btn primary" id="save12">Save answers</button>
+        <button class="btn ghost" id="model12btn">Show model answers</button>
+      </div>
+      <div class="example hidden" id="model12"><b>Model answers:</b><br>
+        1. My sister always wears smart clothes to work. / My sister is always well-dressed at work.<br>
+        2. I don't like buying second-hand clothes.<br>
+        3. These shoes are uncomfortable.<br>
+        4. My blue shirt matches my black trousers.<br>
+        5. Can I borrow your jacket for the party?<br>
+        6. This type of hat is very trendy / fashionable right now.<br>
+        7. I only wear casual clothes at weekends.<br>
+        8. I bought this brand new phone yesterday.</div>
+      <div class="fb" id="fb12"></div>
+    </article>
+
+    <article class="card" data-a="g">
+      <div class="card-top"><span class="exnum">EX 1.3</span><h3>Context &amp; Personalization</h3><span class="badge drag">drag & drop + writing</span></div>
+      <p class="instr"><b>Instructions:</b> drag the words from the box and drop them into the correct gaps in the text. Then answer the questions about YOURSELF.</p>
+      
+      <div class="word-bank" id="wordBank13">
+        <div class="drag-word" draggable="true" data-w="trendy">trendy</div>
+        <div class="drag-word" draggable="true" data-w="casual">casual</div>
+        <div class="drag-word" draggable="true" data-w="loose-fitting">loose-fitting</div>
+        <div class="drag-word" draggable="true" data-w="matches">matches</div>
+        <div class="drag-word" draggable="true" data-w="second-hand">second-hand</div>
+        <div class="drag-word" draggable="true" data-w="borrow">borrow</div>
+        <div class="drag-word" draggable="true" data-w="brand new">brand new</div>
+      </div>
+
+      <div class="drop-text" id="dropText13">
+        "Hi, I'm Leo. I'm not really into <span class="drop-zone" data-ans="trendy"></span> clothes, because they are often expensive and go out of style very quickly. I usually prefer <span class="drop-zone" data-ans="casual"></span> things like jeans and hoodies, because they are comfortable for every day. My favourite item is a <span class="drop-zone" data-ans="loose-fitting"></span> black jacket. It's great because it <span class="drop-zone" data-ans="matches"></span> almost everything I own! Sometimes I buy <span class="drop-zone" data-ans="second-hand"></span> clothes online because it's cheaper and better for the environment. Last week, my friend asked to <span class="drop-zone" data-ans="borrow"></span> my favourite sneakers for a party, but I said no because they are <span class="drop-zone" data-ans="brand new"></span> and I don't want to get them dirty!"
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="check13">Check gaps</button>
+        <button class="btn ghost" id="reset13">Reset gaps</button>
+      </div>
+      <div class="fb" id="fb13"></div>
+
+      <div class="pq">
+        <h4>💬 Now answer about yourself:</h4>
+        <label for="pq1">1. What is your favourite item of clothing and why? Is it <b>loose-fitting</b> or <b>skinny</b>?</label>
+        <textarea class="inp" id="pq1" data-open></textarea>
+        <label for="pq2">2. Do you prefer <b>smart</b> or <b>casual</b> clothes? Why?</label>
+        <textarea class="inp" id="pq2" data-open></textarea>
+        <label for="pq3">3. Do you prefer buying <b>brand new</b> things, or are you happy to shop <b>second-hand</b>? What was the last thing you bought?</label>
+        <textarea class="inp" id="pq3" data-open></textarea>
+        <div class="actions"><button class="btn primary" id="save13p">Save personal answers</button></div>
+        <div class="fb" id="fb13p"></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ BLOCK 2 ============ -->
+  <section class="block" id="b2">
+    <div class="block-head" style="--acc:#f59e0b">
+      <h2><span class="dot"></span>Block 2 · Past Simple</h2>
+      <p>Goal: master regular (-ed pronunciation) and irregular verbs in the past tense.</p>
+    </div>
+
+    <article class="card" data-a="y">
+      <div class="card-top"><span class="exnum">EX 2.1</span><h3>The Sorting Hat (-ed endings)</h3><span class="badge auto">auto-check</span></div>
+      <p class="instr"><b>Instructions:</b> click a verb, then click a column to place it based on how we PRONOUNCE the -ed ending. Click a placed verb to return it.</p>
+      <div class="bank" id="bank21">
+        <span class="chip" data-w="watched">watched</span><span class="chip" data-w="played">played</span>
+        <span class="chip" data-w="wanted">wanted</span><span class="chip" data-w="liked">liked</span>
+        <span class="chip" data-w="visited">visited</span><span class="chip" data-w="danced">danced</span>
+        <span class="chip" data-w="needed">needed</span><span class="chip" data-w="stopped">stopped</span>
+        <span class="chip" data-w="cleaned">cleaned</span><span class="chip" data-w="decided">decided</span>
+      </div>
+      <div class="cols">
+        <div class="dropcol c1" id="colT"><h4>/t/ sound</h4><div class="drop"></div></div>
+        <div class="dropcol c2" id="colD"><h4>/d/ sound</h4><div class="drop"></div></div>
+        <div class="dropcol c3" id="colID"><h4>/ɪd/ sound</h4><div class="drop"></div></div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="check21">Check sorting</button>
+        <button class="btn ghost" id="reset21">Reset</button>
+      </div>
+      <div class="fb" id="fb21"></div>
+    </article>
+
+    <article class="card" data-a="y">
+      <div class="card-top"><span class="exnum">EX 2.2</span><h3>Choose the Correct Form</h3><span class="badge auto">auto-check</span></div>
+      <p class="instr"><b>Instructions:</b> choose the correct Past Simple form of the verb.</p>
+      <div class="mcq" data-ex="2.2" data-a="chose"><b>1.</b> I ____ some new shoes for the party yesterday.
+        <div class="opts"><span class="opt" data-v="chose">chose</span><span class="opt" data-v="choosed">choosed</span></div></div>
+      <div class="mcq" data-ex="2.2" data-a="planned"><b>2.</b> We ____ to go to a concert, but they cancelled it.
+        <div class="opts"><span class="opt" data-v="planed">planed</span><span class="opt" data-v="planned">planned</span></div></div>
+      <div class="mcq" data-ex="2.2" data-a="read"><b>3.</b> He ____ the lyrics of the song before he sang it.
+        <div class="opts"><span class="opt" data-v="read">read</span><span class="opt" data-v="red">red</span></div></div>
+      <div class="mcq" data-ex="2.2" data-a="get"><b>4.</b> Did you ____ any new clothes for your birthday?
+        <div class="opts"><span class="opt" data-v="get">get</span><span class="opt" data-v="got">got</span></div></div>
+      <div class="mcq" data-ex="2.2" data-a="enjoyed"><b>5.</b> My sister and I ____ shopping last Saturday.
+        <div class="opts"><span class="opt" data-v="enjoyed">enjoyed</span><span class="opt" data-v="enjoied">enjoied</span></div></div>
+      <div class="mcq" data-ex="2.2" data-a="meet"><b>6.</b> I didn't ____ your friends at the festival.
+        <div class="opts"><span class="opt" data-v="met">met</span><span class="opt" data-v="meet">meet</span></div></div>
+      <div class="actions">
+        <button class="btn primary" id="check22">Check answers</button>
+        <button class="btn ghost" id="reset22">Reset</button>
+      </div>
+      <div class="fb" id="fb22"></div>
+    </article>
+  </section>
+
+  <!-- ============ BLOCK 3 ============ -->
+  <section class="block" id="b3">
+    <div class="block-head" style="--acc:#f97316">
+      <h2><span class="dot"></span>Block 3 · Adverbs of Manner</h2>
+      <p>Goal: form adverbs from adjectives and use them correctly in sentences.</p>
+    </div>
+
+    <article class="card" data-a="o">
+      <div class="card-top"><span class="exnum">EX 3.1</span><h3>Form the Adverb</h3><span class="badge auto">auto-check</span></div>
+      <p class="instr"><b>Instructions:</b> write the adverb form of the adjective. Pay attention to spelling rules! (-ly, -ily, irregular)</p>
+      <div class="line" style="display:grid;grid-template-columns:1fr 1fr;gap:10px 20px">
+        <div>1. quick → <input class="inp" id="adv1" data-open data-ans="quickly" style="width:120px;display:inline-block"></div>
+        <div>2. happy → <input class="inp" id="adv2" data-open data-ans="happily" style="width:120px;display:inline-block"></div>
+        <div>3. hard → <input class="inp" id="adv3" data-open data-ans="hard" style="width:120px;display:inline-block"></div>
+        <div>4. good → <input class="inp" id="adv4" data-open data-ans="well" style="width:120px;display:inline-block"></div>
+        <div>5. fast → <input class="inp" id="adv5" data-open data-ans="fast" style="width:120px;display:inline-block"></div>
+        <div>6. careful → <input class="inp" id="adv6" data-open data-ans="carefully" style="width:120px;display:inline-block"></div>
+        <div>7. lazy → <input class="inp" id="adv7" data-open data-ans="lazily" style="width:120px;display:inline-block"></div>
+        <div>8. early → <input class="inp" id="adv8" data-open data-ans="early" style="width:120px;display:inline-block"></div>
+        <div>9. angry → <input class="inp" id="adv9" data-open data-ans="angrily" style="width:120px;display:inline-block"></div>
+        <div>10. rude → <input class="inp" id="adv10" data-open data-ans="rudely" style="width:120px;display:inline-block"></div>
+        <div>11. heavy → <input class="inp" id="adv11" data-open data-ans="heavily" style="width:120px;display:inline-block"></div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="check31">Check answers</button>
+        <button class="btn ghost" id="reset31">Reset</button>
+      </div>
+      <div class="fb" id="fb31"></div>
+    </article>
+
+    <article class="card" data-a="o">
+      <div class="card-top"><span class="exnum">EX 3.2</span><h3>Complete the Sentences</h3><span class="badge auto">auto-check</span></div>
+      <p class="instr"><b>Instructions:</b> complete the sentences with the correct adverb formed from the adjective in brackets.</p>
+      <div class="line">1. The sisters were chatting <input class="inp" id="sent1" data-open data-ans="happily" style="width:120px;display:inline-block"> (happy) in the café.</div>
+      <div class="line">2. She was late, so she was walking <input class="inp" id="sent2" data-open data-ans="fast" style="width:120px;display:inline-block"> (fast) to school.</div>
+      <div class="line">3. You mustn't talk <input class="inp" id="sent3" data-open data-ans="loudly" style="width:120px;display:inline-block"> (loud) in the cinema.</div>
+      <div class="line">4. My grandma is old. She walks quite <input class="inp" id="sent4" data-open data-ans="slowly" style="width:120px;display:inline-block"> (slow).</div>
+      <div class="line">5. He plays the piano really <input class="inp" id="sent5" data-open data-ans="well" style="width:120px;display:inline-block"> (good).</div>
+      <div class="line">6. Alana won the tennis match <input class="inp" id="sent6" data-open data-ans="easily" style="width:120px;display:inline-block"> (easy).</div>
+      <div class="actions">
+        <button class="btn primary" id="check32">Check answers</button>
+        <button class="btn ghost" id="reset32">Reset</button>
+      </div>
+      <div class="fb" id="fb32"></div>
+    </article>
+
+    <article class="card" data-a="o">
+      <div class="card-top"><span class="exnum">EX 3.3</span><h3>Find the Mistake</h3><span class="badge write">writing + auto-check</span></div>
+      <p class="instr"><b>Instructions:</b> write the corrected sentence or the correct word. Two sentences are correct.</p>
+      <div class="line"><b>1.</b> He drives very careful. <input class="inp wide" id="mist1" data-open placeholder="Correction..."></div>
+      <div class="line"><b>2.</b> She sings beautiful. <input class="inp wide" id="mist2" data-open placeholder="Correction..."></div>
+      <div class="line"><b>3.</b> They worked hardly on their fashion project. <input class="inp wide" id="mist3" data-open placeholder="Correction..."></div>
+      <div class="line"><b>4.</b> I listened to the music loudly. <input class="inp wide" id="mist4" data-open placeholder="Correction or 'Correct'..."></div>
+      <div class="line"><b>5.</b> He looked at me angry. <input class="inp wide" id="mist5" data-open placeholder="Correction..."></div>
+      <div class="line"><b>6.</b> The model walked down the street confident. <input class="inp wide" id="mist6" data-open placeholder="Correction..."></div>
+      <div class="line"><b>7.</b> She smiled happy when she saw the dress. <input class="inp wide" id="mist7" data-open placeholder="Correction..."></div>
+      <div class="line"><b>8.</b> The rain started heavy, so we ran home. <input class="inp wide" id="mist8" data-open placeholder="Correction..."></div>
+      <div class="actions">
+        <button class="btn primary" id="check33">Check answers</button>
+        <button class="btn ghost" id="show33">Show answers</button>
+      </div>
+      <div class="fb" id="fb33"></div>
+    </article>
+  </section>
+
+  <!-- ============ BLOCK 4 ============ -->
+  <section class="block" id="b4">
+    <div class="block-head" style="--acc:#ec4899">
+      <h2><span class="dot"></span>Block 4 · Final Challenge</h2>
+      <p>Goal: combine vocabulary, grammar, and adverbs in creative tasks.</p>
+    </div>
+
+    <article class="card" data-a="p">
+      <div class="card-top"><span class="exnum">EX 4.1</span><h3>The Shopping Story</h3><span class="badge write">writing</span></div>
+      <p class="instr"><b>Instructions:</b> write a short story (60-80 words) about a time you went shopping or got ready for a special event. Your text is saved for the teacher's report.</p>
+      <div class="example"><b>You MUST use:</b> 3+ vocabulary words from Block 1 · 3+ verbs in Past Simple · 2+ adverbs of manner.</div>
+      <textarea class="inp" id="storyText" data-open style="min-height:150px" placeholder="Write your story here…"></textarea>
+      <div class="actions">
+        <button class="btn primary" id="save41">Save my story</button>
+        <button class="btn ghost" id="example41btn">Show example story</button>
+      </div>
+      <div class="example hidden" id="example41"><b>Example:</b><br>"Last Saturday, I went to the mall. I was looking for something <b>smart</b> to wear to a wedding. I <b>tried</b> on a few dresses, but they were <b>uncomfortable</b>. Finally, I <b>found</b> a beautiful <b>loose-fitting</b> dress. It <b>matched</b> my shoes perfectly! I paid for it <b>quickly</b> and went home <b>happily</b>."</div>
+      <div class="fb" id="fb41"></div>
+    </article>
+
+    <article class="card" data-a="p">
+      <div class="card-top"><span class="exnum">EX 4.2</span><h3>The Fashion Detective</h3><span class="badge write">visual + writing</span></div>
+      <p class="instr"><b>Instructions:</b> look at the photo of Martha, Lily, and Sasha. Answer the questions about their style (Unit 2) and their personality (Unit 1). Write a short profile for Part 3.</p>
+      
+      <!-- ЗАГЛУШКА ДЛЯ ИЗОБРАЖЕНИЯ -->
+      <div class="img-placeholder">
+        <!-- ВСТАВЬТЕ ССЫЛКУ НА ВАШЕ ИЗОБРАЖЕНИЕ НИЖЕ (замените src="..." на путь к вашему файлу, например src="girls.jpg") -->
+        <img src="https://psv4.vkuserphoto.ru/s/v1/d2/olzU_mpEuKhhn40vT2YgaP89W9NioaUzLJ-sVlsWe52HicOx53vANmr63LxRdyCxnRJIegpts71l8UXXZ0pVggfOPWke76C_Qw5KDEffTgCM1LOPZtty5uSJg_q283HF7EhZoI7kK9xm/image-3.png" alt="Fashion Image Placeholder" id="fashionImg" style="display:none;">
+        <span id="imgPlaceholderText"> TEACHER: Insert your image (Martha, Lily, Sasha) here.<br>Open the HTML code, find line ~680, and add your image path to src="..."</span>
+      </div>
+
+      <h4 style="margin-bottom:10px;color:var(--acc)">Part 1: The Clothes (Unit 2)</h4>
+      <div class="line">1. Who is wearing <b>loose-fitting</b> clothes? Who is wearing something more <b>smart</b>?
+        <textarea class="inp" id="imgQ1" data-open style="min-height:70px;margin-top:8px"></textarea></div>
+      <div class="line">2. Do you think their clothes <b>match</b> well? Give an example.
+        <textarea class="inp" id="imgQ2" data-open style="min-height:70px;margin-top:8px"></textarea></div>
+      <div class="line">3. Whose style do you think is the most <b>trendy</b> right now? Whose style is the most <b>casual</b>?
+        <textarea class="inp" id="imgQ3" data-open style="min-height:70px;margin-top:8px"></textarea></div>
+
+      <h4 style="margin:20px 0 10px;color:var(--acc)">Part 2: The Personality (Unit 1)</h4>
+      <div class="word-box-inline">
+        <span>confident</span><span>outgoing</span><span>cheerful</span><span>shy</span><span>arrogant</span><span>friendly</span><span>moody</span><span>independent</span>
+      </div>
+      <div class="line">4. Who looks the most <b>outgoing</b> and <b>cheerful</b>? Why do you think so?
+        <textarea class="inp" id="imgQ4" data-open style="min-height:70px;margin-top:8px"></textarea></div>
+      <div class="line">5. Who looks very <b>confident</b>, but maybe a little bit <b>arrogant</b> or cool?
+        <textarea class="inp" id="imgQ5" data-open style="min-height:70px;margin-top:8px"></textarea></div>
+      <div class="line">6. Who looks <b>independent</b> and relaxed?
+        <textarea class="inp" id="imgQ6" data-open style="min-height:70px;margin-top:8px"></textarea></div>
+
+      <h4 style="margin:20px 0 10px;color:var(--acc)">Part 3: The Profile (Writing)</h4>
+      <p class="instr"><b>Instructions:</b> choose ONE girl (Martha, Lily, or Sasha). Write a short profile (40-60 words). Describe her style AND her personality. Use 2 clothes adjectives, 2 personality adjectives, and 1 adverb of manner.</p>
+      <textarea class="inp" id="imgProfile" data-open style="min-height:120px" placeholder="Write your profile here…"></textarea>
+      
+      <div class="actions">
+        <button class="btn primary" id="save42">Save Detective Report</button>
+      </div>
+      <div class="fb" id="fb42"></div>
+    </article>
+  </section>
+
+  <!-- ============ BLOCK 5: REPORT ============ -->
+  <section class="block" id="b5">
+    <div class="block-head" style="--acc:#6366f1">
+      <h2><span class="dot"></span>Teacher Report</h2>
+      <p>Complete all 11 tasks to unlock the report. Written answers are saved automatically in this browser.</p>
+    </div>
+
+    <article class="card" data-a="i">
+      <div class="card-top"><span class="exnum">STATUS</span><h3>Task checklist</h3></div>
+      <div class="checklist" id="checkList"></div>
+      <div class="actions">
+        <button class="btn primary" id="genReport">📄 Generate teacher report</button>
+      </div>
+      <div class="fb" id="fbRep"></div>
+
+      <div id="reportPanel">
+        <pre id="reportPre"></pre>
+        <div class="actions">
+          <button class="btn primary" id="copyRep">Copy report</button>
+          <button class="btn ghost" id="dlRep">Download .txt</button>
+          <button class="btn ghost" id="printRep">Print</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s);};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+
+/* ---------- STATE ---------- */
+var TASKS=['1.1','1.2','1.3','1.3P','2.1','2.2','3.1','3.2','3.3','4.1','4.2'];
+var TASK_LABELS={
+  '1.1':'Ex 1.1 Matching','1.2':'Ex 1.2 Upgrade','1.3':'Ex 1.3 Drag&Drop','1.3P':'Ex 1.3 Personal',
+  '2.1':'Ex 2.1 Sorting -ed','2.2':'Ex 2.2 Past Simple MC',
+  '3.1':'Ex 3.1 Form Adverb','3.2':'Ex 3.2 Adverb Gaps','3.3':'Ex 3.3 Find Mistake',
+  '4.1':'Ex 4.1 Shopping Story','4.2':'Ex 4.2 Fashion Detective'
+};
+var BLOCK_TASKS={b1:['1.1','1.2','1.3','1.3P'],b2:['2.1','2.2'],b3:['3.1','3.2','3.3'],b4:['4.1','4.2']};
+var state={name:'',scores:{},open:{},done:{}};
+
+function persist(){try{localStorage.setItem('u2practice',JSON.stringify(state));}catch(e){}}
+function restore(){try{var raw=localStorage.getItem('u2practice');if(raw){var s=JSON.parse(raw);if(s&&typeof s==='object'){state.name=s.name||'';state.scores=s.scores||{};state.open=s.open||{};state.done=s.done||{};}}}catch(e){}}
+
+function fb(id,type,html){var el=$('#'+id);if(!el)return;el.className='fb show '+type;el.innerHTML=html;}
+
+function refresh(){
+  var done=TASKS.filter(function(t){return state.done[t];}).length;
+  $('#progFill').style.width=(done/TASKS.length*100)+'%';
+  $('#progText').textContent=done+' / '+TASKS.length+' tasks completed';
+  $$('.tab').forEach(function(tab){
+    var t=tab.getAttribute('data-t');
+    if(BLOCK_TASKS[t]){
+      var all=BLOCK_TASKS[t].every(function(x){return state.done[x];});
+      tab.classList.toggle('done',all);
+    }
+  });
+  var cl=$('#checkList');cl.innerHTML='';
+  TASKS.forEach(function(t){
+    var d=document.createElement('div');
+    d.className='ck'+(state.done[t]?' done':'');
+    d.innerHTML='<span class="box">'+(state.done[t]?'✓':'')+'</span>'+TASK_LABELS[t];
+    cl.appendChild(d);
+  });
+}
+function markDone(t){state.done[t]=true;persist();refresh();}
+
+/* ---------- TABS ---------- */
+$$('.tab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    $$('.tab').forEach(function(t){t.classList.remove('active');});
+    $$('.block').forEach(function(b){b.classList.remove('active');});
+    tab.classList.add('active');
+    $('#'+tab.getAttribute('data-t')).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* ---------- OPEN ANSWERS AUTOSAVE ---------- */
+$$('[data-open]').forEach(function(el){
+  if(state.open[el.id])el.value=state.open[el.id];
+  el.addEventListener('input',function(){state.open[el.id]=el.value;persist();});
+});
+var nameInput=$('#studentName');
+nameInput.value=state.name||'';
+nameInput.addEventListener('input',function(){state.name=nameInput.value;persist();});
+
+/* ---------- EX 1.1 MATCHING ---------- */
+var mMap={},mSel=null;
+$$('#mLeft .mitem').forEach(function(el){
+  el.addEventListener('click',function(){
+    $$('#mLeft .mitem').forEach(function(x){x.classList.remove('sel');});
+    el.classList.add('sel');mSel=el.getAttribute('data-k');
+  });
+});
+$$('#mRight .mitem').forEach(function(el){
+  el.addEventListener('click',function(){
+    if(!mSel)return;
+    mMap[mSel]=el.getAttribute('data-k');
+    var L=$('#mLeft .mitem[data-k="'+mSel+'"]');
+    if(L){L.classList.add('paired');L.classList.remove('sel');}
+    el.classList.add('paired');mSel=null;
+  });
+});
+$('#check11').addEventListener('click',function(){
+  var c=0;
+  for(var i=1;i<=12;i++){
+    var ok=mMap[i]===String(i);
+    var L=$('#mLeft .mitem[data-k="'+i+'"]'),R=$('#mRight .mitem[data-k="'+i+'"]');
+    [L,R].forEach(function(el){el.classList.remove('ok','bad');el.classList.add(ok?'ok':'bad');});
+    if(ok)c++;
+  }
+  state.scores['1.1']={c:c,t:12};markDone('1.1');
+  fb('fb11',c===12?'ok':'warn','<b>'+c+'/12</b> correct pairs.'+(c===12?' Perfect! 🎉':' Red items need another look.'));
+});
+$('#reset11').addEventListener('click',function(){
+  mMap={};mSel=null;
+  $$('#mLeft .mitem, #mRight .mitem').forEach(function(el){el.classList.remove('sel','paired','ok','bad');});
+  $('#fb11').className='fb';
+});
+
+/* ---------- EX 1.2 ---------- */
+var O12=['o12a','o12b','o12c','o12d','o12e','o12f','o12g','o12h'];
+$('#save12').addEventListener('click',function(){
+  var filled=O12.filter(function(id){return $('#'+id).value.trim().length>3;}).length;
+  if(filled<O12.length){fb('fb12','warn','Please write all '+O12.length+' sentences before saving ('+filled+'/'+O12.length+' done).');return;}
+  markDone('1.2');fb('fb12','ok','All 8 answers saved to the teacher report ✓');
+});
+$('#model12btn').addEventListener('click',function(){$('#model12').classList.toggle('hidden');});
+
+/* ---------- EX 1.3 DRAG AND DROP ---------- */
+var draggedWord=null;
+$$('.drag-word').forEach(function(word){
+  word.addEventListener('dragstart',function(e){
+    draggedWord=this;
+    e.dataTransfer.setData('text/plain',this.getAttribute('data-w'));
+    setTimeout(function(){word.style.opacity='.5';},0);
+  });
+  word.addEventListener('dragend',function(){this.style.opacity='1';draggedWord=null;});
+  
+  // Touch support for mobile/tablet
+  word.addEventListener('touchstart',function(e){
+    draggedWord=this;this.style.opacity='.5';
+  },{passive:true});
+  word.addEventListener('touchend',function(e){
+    this.style.opacity='1';
+    var touch=e.changedTouches[0];
+    var target=document.elementFromPoint(touch.clientX,touch.clientY);
+    if(target&&target.classList.contains('drop-zone')&&!target.classList.contains('filled')){
+      fillZone(target,draggedWord);
+    }
+    draggedWord=null;
+  });
+});
+
+$$('.drop-zone').forEach(function(zone){
+  zone.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('hover');});
+  zone.addEventListener('dragleave',function(){this.classList.remove('hover');});
+  zone.addEventListener('drop',function(e){
+    e.preventDefault();this.classList.remove('hover');
+    if(draggedWord&&!this.classList.contains('filled')){
+      fillZone(this,draggedWord);
+    }
+  });
+  zone.addEventListener('click',function(){
+    if(this.classList.contains('filled')){
+      var w=this.getAttribute('data-w');
+      var bankWord=$$('.drag-word').find(function(el){return el.getAttribute('data-w')===w;});
+      if(bankWord)bankWord.classList.remove('placed');
+      this.textContent='';this.classList.remove('filled','ok','bad');this.removeAttribute('data-w');
+    }
+  });
+});
+
+function fillZone(zone,wordEl){
+  zone.textContent=wordEl.getAttribute('data-w');
+  zone.setAttribute('data-w',wordEl.getAttribute('data-w'));
+  zone.classList.add('filled');
+  wordEl.classList.add('placed');
+}
+
+$('#check13').addEventListener('click',function(){
+  var c=0,t=7;
+  $$('.drop-zone').forEach(function(zone){
+    var ans=zone.getAttribute('data-ans');
+    var val=zone.getAttribute('data-w');
+    zone.classList.remove('ok','bad');
+    if(val===ans){zone.classList.add('ok');c++;}
+    else if(val){zone.classList.add('bad');}
+  });
+  state.scores['1.3']={c:c,t:t};markDone('1.3');
+  fb('fb13',c===t?'ok':'warn','<b>'+c+'/'+t+'</b> gaps correct.'+(c===t?' Excellent! 🎉':''));
+});
+$('#reset13').addEventListener('click',function(){
+  $$('.drop-zone').forEach(function(z){z.textContent='';z.classList.remove('filled','ok','bad');z.removeAttribute('data-w');});
+  $$('.drag-word').forEach(function(w){w.classList.remove('placed');});
+  $('#fb13').className='fb';
+});
+
+$('#save13p').addEventListener('click',function(){
+  var filled=['pq1','pq2','pq3'].filter(function(id){return $('#'+id).value.trim().length>3;}).length;
+  if(filled<3){fb('fb13p','warn','Answer all 3 personal questions first ('+filled+'/3 done).');return;}
+  markDone('1.3P');fb('fb13p','ok','Personal answers saved to the report ✓');
+});
+
+/* ---------- EX 2.1 SORTING ---------- */
+var selChip=null;
+function bindChip(chip){
+  chip.addEventListener('click',function(ev){
+    ev.stopPropagation();
+    if(chip.parentElement.classList.contains('drop')){
+      $('#bank21').appendChild(chip);chip.classList.remove('sel');selChip=null;return;
+    }
+    $$('.chip').forEach(function(c){c.classList.remove('sel');});
+    chip.classList.add('sel');selChip=chip;
+  });
+}
+$$('.chip').forEach(bindChip);
+['#colT','#colD','#colID'].forEach(function(sel){
+  var col=$(sel);
+  col.addEventListener('click',function(){
+    if(!selChip)return;
+    col.querySelector('.drop').appendChild(selChip);
+    selChip.classList.remove('sel');selChip=null;
+  });
+  col.addEventListener('mouseenter',function(){col.classList.add('hot');});
+  col.addEventListener('mouseleave',function(){col.classList.remove('hot');});
+});
+$('#check21').addEventListener('click',function(){
+  var T=['watched','liked','danced','stopped'];
+  var D=['played','cleaned'];
+  var ID=['wanted','visited','needed','decided'];
+  var c=0;
+  $$('#colT .drop .chip').forEach(function(ch){if(T.indexOf(ch.getAttribute('data-w'))>-1)c++;});
+  $$('#colD .drop .chip').forEach(function(ch){if(D.indexOf(ch.getAttribute('data-w'))>-1)c++;});
+  $$('#colID .drop .chip').forEach(function(ch){if(ID.indexOf(ch.getAttribute('data-w'))>-1)c++;});
+  var placed=$$('#colT .drop .chip').length+$$('#colD .drop .chip').length+$$('#colID .drop .chip').length;
+  if(placed<10){fb('fb21','warn','Place all 10 verbs first ('+placed+'/10 placed).');return;}
+  state.scores['2.1']={c:c,t:10};markDone('2.1');
+  fb('fb21',c===10?'ok':'warn','<b>'+c+'/10</b> verbs in the right column.'+(c===10?' Perfect pronunciation! 🔥':''));
+});
+$('#reset21').addEventListener('click',function(){
+  $$('#colT .drop .chip, #colD .drop .chip, #colID .drop .chip').forEach(function(ch){$('#bank21').appendChild(ch);});
+  selChip=null;$$('.chip').forEach(function(c){c.classList.remove('sel');});
+  $('#fb21').className='fb';
+});
+
+/* ---------- GENERIC MC ---------- */
+$$('.mcq').forEach(function(q){
+  $$('.opt',q).forEach(function(o){
+    o.addEventListener('click',function(){
+      $$('.opt',q).forEach(function(x){x.classList.remove('sel');});
+      o.classList.add('sel');
+    });
+  });
+});
+function gradeGroup(ex){
+  var qs=$$('.mcq[data-ex="'+ex+'"]'),c=0;
+  qs.forEach(function(q){
+    var a=q.getAttribute('data-a'),sel=$('.opt.sel',q);
+    $$('.opt',q).forEach(function(o){
+      o.classList.remove('ok','bad');
+      if(o.getAttribute('data-v')===a)o.classList.add('ok');
+    });
+    if(sel&&sel.getAttribute('data-v')===a)c++;
+    else if(sel)sel.classList.add('bad');
+  });
+  return {c:c,t:qs.length};
+}
+function resetGroup(ex){
+  $$('.mcq[data-ex="'+ex+'"] .opt').forEach(function(o){o.classList.remove('sel','ok','bad');});
+}
+$('#check22').addEventListener('click',function(){var r=gradeGroup('2.2');state.scores['2.2']=r;markDone('2.2');fb('fb22',r.c===r.t?'ok':'warn','<b>'+r.c+'/'+r.t+'</b> correct.');});
+$('#reset22').addEventListener('click',function(){resetGroup('2.2');$('#fb22').className='fb';});
+
+/* ---------- EX 3.1 FORM ADVERB ---------- */
+$('#check31').addEventListener('click',function(){
+  var c=0,t=11;
+  for(var i=1;i<=11;i++){
+    var el=$('#adv'+i),ans=el.getAttribute('data-ans'),val=el.value.trim().toLowerCase();
+    el.classList.remove('ok','bad');
+    if(val===ans){el.classList.add('ok');c++;}
+    else if(val){el.classList.add('bad');}
+  }
+  state.scores['3.1']={c:c,t:t};markDone('3.1');
+  fb('fb31',c===t?'ok':'warn','<b>'+c+'/'+t+'</b> correct adverbs.');
+});
+$('#reset31').addEventListener('click',function(){
+  for(var i=1;i<=11;i++){$('#adv'+i).value='';$('#adv'+i).classList.remove('ok','bad');}
+  $('#fb31').className='fb';
+});
+
+/* ---------- EX 3.2 ADVERB GAPS ---------- */
+$('#check32').addEventListener('click',function(){
+  var c=0,t=6;
+  for(var i=1;i<=6;i++){
+    var el=$('#sent'+i),ans=el.getAttribute('data-ans'),val=el.value.trim().toLowerCase();
+    el.classList.remove('ok','bad');
+    if(val===ans){el.classList.add('ok');c++;}
+    else if(val){el.classList.add('bad');}
+  }
+  state.scores['3.2']={c:c,t:t};markDone('3.2');
+  fb('fb32',c===t?'ok':'warn','<b>'+c+'/'+t+'</b> correct.');
+});
+$('#reset32').addEventListener('click',function(){
+  for(var i=1;i<=6;i++){$('#sent'+i).value='';$('#sent'+i).classList.remove('ok','bad');}
+  $('#fb32').className='fb';
+});
+
+/* ---------- EX 3.3 FIND MISTAKE ---------- */
+var VAL33=[
+  function(v){return /carefully/.test(v);},
+  function(v){return /beautifully/.test(v);},
+  function(v){return /\bhard\b/.test(v)&&!/hardly/.test(v);},
+  function(v){return /correct|no mistake|^ok$|✓|loudly/.test(v);},
+  function(v){return /angrily/.test(v);},
+  function(v){return /confidently/.test(v);},
+  function(v){return /happily/.test(v);},
+  function(v){return /heavily/.test(v);}
+];
+$('#check33').addEventListener('click',function(){
+  var c=0,empty=0;
+  VAL33.forEach(function(fn,i){
+    var el=$('#mist'+(i+1)),v=el.value.trim().toLowerCase();
+    if(!v){empty++;}
+    var ok=fn(v);
+    el.classList.remove('ok','bad');el.classList.add(ok?'ok':'bad');
+    if(ok)c++;
+  });
+  if(empty>0){fb('fb33','warn','Fill in all 8 corrections first.');return;}
+  state.scores['3.3']={c:c,t:8};markDone('3.3');
+  fb('fb33',c===8?'ok':'warn','<b>'+c+'/8</b> correct. Remember: adjectives describe nouns, adverbs describe verbs!');
+});
+$('#show33').addEventListener('click',function(){
+  var ans=["He drives very carefully.","She sings beautifully.","They worked hard on their fashion project.","Correct!","He looked at me angrily.","The model walked down the street confidently.","She smiled happily when she saw the dress.","The rain started heavily, so we ran home."];
+  ans.forEach(function(a,i){var el=$('#mist'+(i+1));el.value=a;el.classList.remove('bad');el.classList.add('ok');state.open[el.id]=a;});
+  persist();
+});
+
+/* ---------- EX 4.1 ---------- */
+$('#save41').addEventListener('click',function(){
+  var t=$('#storyText').value.trim();
+  if(t.length<50){fb('fb41','err','Your story is too short ('+t.length+' characters). Write at least 50.');return;}
+  markDone('4.1');fb('fb41','ok','Story saved to the teacher report ✓ Great job!');
+});
+$('#example41btn').addEventListener('click',function(){$('#example41').classList.toggle('hidden');});
+
+/* ---------- EX 4.2 ---------- */
+$('#save42').addEventListener('click',function(){
+  var fields=['imgQ1','imgQ2','imgQ3','imgQ4','imgQ5','imgQ6','imgProfile'];
+  var filled=fields.filter(function(id){return $('#'+id).value.trim().length>3;}).length;
+  if(filled<fields.length){fb('fb42','warn','Please answer all questions and write the profile ('+filled+'/'+fields.length+' done).');return;}
+  markDone('4.2');fb('fb42','ok','Detective report saved to the teacher report ✓ Excellent analysis!');
+});
+
+/* ---------- IMAGE PLACEHOLDER LOGIC ---------- */
+var imgEl=$('#fashionImg');
+if(imgEl && imgEl.getAttribute('src') && imgEl.getAttribute('src').length>0){
+  imgEl.style.display='block';
+  $('#imgPlaceholderText').style.display='none';
+}
+
+/* ---------- REPORT ---------- */
+var SCORE_LABELS={
+  '1.1':'Ex 1.1 · Matching (12 pairs)','1.3':'Ex 1.3 · Drag & Drop Gaps',
+  '2.1':'Ex 2.1 · Sorting -ed endings','2.2':'Ex 2.2 · Past Simple MC',
+  '3.1':'Ex 3.1 · Form the Adverb (11)','3.2':'Ex 3.2 · Adverb Gaps (6)','3.3':'Ex 3.3 · Find the Mistake (8)'
+};
+var OPEN_LABELS=[
+  ['o12a','Ex 1.2 · Upgrade #1'],['o12b','Ex 1.2 · Upgrade #2'],['o12c','Ex 1.2 · Upgrade #3'],['o12d','Ex 1.2 · Upgrade #4'],
+  ['o12e','Ex 1.2 · Upgrade #5'],['o12f','Ex 1.2 · Upgrade #6'],['o12g','Ex 1.2 · Upgrade #7'],['o12h','Ex 1.2 · Upgrade #8'],
+  ['pq1','Ex 1.3 · Personal Q1 (favourite item)'],['pq2','Ex 1.3 · Personal Q2 (smart vs casual)'],['pq3','Ex 1.3 · Personal Q3 (new vs second-hand)'],
+  ['mist1','Ex 3.3 · Correction #1'],['mist2','Ex 3.3 · Correction #2'],['mist3','Ex 3.3 · Correction #3'],['mist4','Ex 3.3 · Correction #4'],
+  ['mist5','Ex 3.3 · Correction #5'],['mist6','Ex 3.3 · Correction #6'],['mist7','Ex 3.3 · Correction #7'],['mist8','Ex 3.3 · Correction #8'],
+  ['storyText','Ex 4.1 · The Shopping Story'],
+  ['imgQ1','Ex 4.2 · Detective Q1 (loose-fitting/smart)'],['imgQ2','Ex 4.2 · Detective Q2 (match)'],['imgQ3','Ex 4.2 · Detective Q3 (trendy/casual)'],
+  ['imgQ4','Ex 4.2 · Detective Q4 (outgoing/cheerful)'],['imgQ5','Ex 4.2 · Detective Q5 (confident/arrogant)'],['imgQ6','Ex 4.2 · Detective Q6 (independent)'],
+  ['imgProfile','Ex 4.2 · Detective Profile (Final Writing)']
+];
+function remaining(){return TASKS.filter(function(t){return !state.done[t];});}
+function buildReport(){
+  var L=[];
+  L.push('ОТЧЁТ ПО ПРАКТИКЕ · UNIT 2 "IN FASHION"');
+  L.push('INTERACTIVE PRACTICE REPORT');
+  L.push('==========================================');
+  L.push('Студент / Student : '+(state.name||'—'));
+  L.push('Дата / Date       : '+new Date().toLocaleString('ru-RU'));
+  var done=TASKS.filter(function(t){return state.done[t];}).length;
+  L.push('Прогресс          : '+done+' / '+TASKS.length+' заданий');
+  L.push('');
+  L.push('--- АВТОПРОВЕРКА / AUTO-GRADED ---');
+  Object.keys(SCORE_LABELS).forEach(function(k){
+    var s=state.scores[k];
+    L.push((s?(s.c+' / '+s.t):'не выполнено / not attempted')+'   '+SCORE_LABELS[k]);
+  });
+  L.push('');
+  L.push('--- ПИСЬМЕННЫЕ ЗАДАНИЯ / WRITTEN TASKS ---');
+  ['1.2','1.3P','4.1','4.2'].forEach(function(t){
+    L.push((state.done[t]?'[выполнено ✓]':'[не выполнено ✗]')+'   '+TASK_LABELS[t]);
+  });
+  L.push('');
+  L.push('--- ОТВЕТЫ УЧЕНИЦЫ / STUDENT ANSWERS ---');
+  OPEN_LABELS.forEach(function(pair){
+    var v=(state.open[pair[0]]||'').trim();
+    L.push('• '+pair[1]+':');
+    L.push('  '+(v?v:'(пусто / empty)'));
+    L.push('');
+  });
+  L.push('==========================================');
+  L.push('Сформировано автоматически · Interactive Practice Unit 2');
+  return L.join('\n');
+}
+$('#genReport').addEventListener('click',function(){
+  var rem=remaining();
+  if(rem.length){
+    fb('fbRep','warn','Сначала завершите задания / Complete first: '+rem.map(function(t){return TASK_LABELS[t];}).join('; '));
+    return;
+  }
+  $('#reportPre').textContent=buildReport();
+  $('#reportPanel').classList.add('show');
+  fb('fbRep','ok','Report is ready! Copy, download or print it below.');
+  $('#reportPanel').scrollIntoView({behavior:'smooth',block:'start'});
+});
+$('#copyRep').addEventListener('click',function(){
+  var txt=$('#reportPre').textContent;
+  function fallback(){
+    var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');}catch(e){}ta.remove();
+    fb('fbRep','ok','Report copied ✓');
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){fb('fbRep','ok','Report copied ✓');},fallback);
+  }else fallback();
+});
+$('#dlRep').addEventListener('click',function(){
+  var blob=new Blob([$('#reportPre').textContent],{type:'text/plain;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='Unit2_InFashion_report.txt';
+  document.body.appendChild(a);a.click();a.remove();
+  URL.revokeObjectURL(a.href);
+  fb('fbRep','ok','File downloaded ✓');
+});
+$('#printRep').addEventListener('click',function(){window.print();});
+
+/* ---------- INIT ---------- */
+restore();
+$$('[data-open]').forEach(function(el){if(state.open[el.id])el.value=state.open[el.id];});
+nameInput.value=state.name||'';
+refresh();
+})();
+</script>
+</body>
+</html>

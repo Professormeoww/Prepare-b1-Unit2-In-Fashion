@@ -17,7 +17,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:28px 16px 80px;overflow-x:hidden;}
+body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:28px 16px 100px;overflow-x:hidden;}
 body::before,body::after{content:'';position:fixed;border-radius:50%;filter:blur(110px);z-index:-1;}
 body::before{width:520px;height:520px;background:rgba(236,72,153,.12);top:-160px;left:-140px}
 body::after{width:460px;height:460px;background:rgba(99,102,241,.12);bottom:-160px;right:-120px}
@@ -95,14 +95,15 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
 .elegant-input.ok{border-bottom-color:var(--ok); background:rgba(16,185,129,.1); color:#065f46;}
 .elegant-input.bad{border-bottom-color:var(--err); background:rgba(239,68,68,.1); color:#991b1b;}
 
-/* DRAG AND DROP */
+/* DRAG AND DROP (Desktop & Mobile Tap) */
 .word-bank{display:flex;flex-wrap:wrap;gap:10px;background:#fffbeb;border:1px dashed #fde68a;border-radius:16px;padding:16px;margin-bottom:20px;min-height:70px;align-items:center;justify-content:center}
-.drag-word{padding:8px 16px;border-radius:99px;background:#fff;border:1px solid #fcd34d;color:#92400e;cursor:grab;font-weight:700;font-size:.92rem;user-select:none;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.05);}
+.drag-word{padding:8px 16px;border-radius:99px;background:#fff;border:1px solid #fcd34d;color:#92400e;cursor:pointer;font-weight:700;font-size:.92rem;user-select:none;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.05);}
 .drag-word:active{cursor:grabbing;transform:scale(1.05)}
-.drag-word.placed{opacity:.3;pointer-events:none}
+.drag-word.placed{opacity:.3;pointer-events:none;}
+.drag-word.selected-mobile{background:var(--acc);color:#fff;border-color:transparent;transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.15);}
 .drop-text{line-height:2.2;font-size:1.05rem;background:#f8fafd;border:1px solid var(--stroke);border-radius:14px;padding:20px}
-.drop-zone{display:inline-block;min-width:120px;height:32px;border-bottom:2px dashed var(--acc);border-radius:6px;vertical-align:middle;margin:0 4px;transition:.2s;background:rgba(255,255,255,.5);}
-.drop-zone.hover{background:rgba(236,72,153,.1);border-color:#ec4899}
+.drop-zone{display:inline-block;min-width:120px;height:32px;border-bottom:2px dashed var(--acc);border-radius:6px;vertical-align:middle;margin:0 4px;transition:.2s;background:rgba(255,255,255,.5);cursor:pointer;}
+.drop-zone.hover, .drop-zone.tap-hover{background:rgba(236,72,153,.15);border-color:#ec4899;border-bottom-style:solid;}
 .drop-zone.filled{border-bottom-style:solid;background:#fff;color:var(--text);font-weight:600;padding:0 12px;line-height:30px;cursor:pointer}
 .drop-zone.ok{border-color:var(--ok);background:#ecfdf5;color:#065f46}
 .drop-zone.bad{border-color:var(--err);background:#fef2f2;color:#991b1b}
@@ -124,7 +125,7 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
 
 /* Drop zone for visual grid */
 .drop-zone-img{width:100%;min-height:36px;border:2px dashed #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#fff;transition:.2s;font-weight:600;font-size:.8rem;color:var(--muted);cursor:pointer;margin-top:4px;}
-.drop-zone-img.hover{background:rgba(245,158,11,.1);border-color:var(--acc)}
+.drop-zone-img.hover, .drop-zone-img.tap-hover{background:rgba(245,158,11,.15);border-color:var(--acc);border-style:solid;}
 .drop-zone-img.filled{border-style:solid;border-color:var(--acc);color:var(--text);background:#fffbeb}
 .drop-zone-img.ok{border-color:var(--ok);background:#ecfdf5;color:#065f46}
 .drop-zone-img.bad{border-color:var(--err);background:#fef2f2;color:#991b1b}
@@ -181,15 +182,28 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
 .web-body h2{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;color:#0f172a;margin-bottom:16px;border-bottom:2px solid #e2e8f0;padding-bottom:8px;}
 .web-body p{margin-bottom:16px;}
 
+/* SOCIAL MEDIA POST SIMULATION */
+.social-post{background:#fff;border:1px solid var(--stroke);border-radius:16px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,.05);margin-bottom:20px;}
+.social-header{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--stroke);}
+.social-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:1.2rem;}
+.social-user{font-weight:700;font-size:.95rem;}
+.social-handle{color:var(--muted);font-size:.8rem;}
+.social-body{padding:16px;font-size:1.05rem;line-height:1.8;color:var(--text);}
+.social-actions-bar{display:flex;gap:16px;padding:12px 16px;border-top:1px solid var(--stroke);color:var(--muted);font-size:.9rem;font-weight:600;}
+.social-actions-bar span{display:flex;align-items:center;gap:6px;cursor:pointer;transition:.3s;}
+.social-actions-bar span:hover{color:var(--err);}
+.social-actions-bar span.liked{color:var(--err);}
+.social-post-footer{padding:16px;background:#f8fafd;border-top:1px solid var(--stroke);display:flex;gap:10px;}
+
 /* OUTFIT BUILDER */
 .builder-container{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
 .builder-bank{background:#f8fafd;border:1px solid var(--stroke);border-radius:16px;padding:16px;min-height:300px;}
 .builder-bank h4{margin-bottom:12px;font-size:.95rem;color:var(--muted);}
-.builder-board{background:#fff;border:2px dashed var(--acc);border-radius:16px;padding:16px;min-height:300px;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;position:relative; transition:.2s;}
+.builder-board{background:#fff;border:2px dashed var(--acc);border-radius:16px;padding:16px;min-height:300px;display:flex;flex-wrap:wrap;gap:12px;align-content:flex-start;position:relative; transition:.2s;}
 .builder-board h4{position:absolute;top:-12px;left:16px;background:#fff;padding:0 8px;color:var(--acc);font-size:.9rem;}
-.board-item{width:70px;height:70px;border-radius:10px;overflow:hidden;position:relative;box-shadow:0 4px 10px rgba(0,0,0,.1);}
+.board-item{width:100px;height:100px;border-radius:12px;overflow:hidden;position:relative;box-shadow:0 4px 12px rgba(0,0,0,.15); border:1px solid var(--stroke);}
 .board-item img{width:100%;height:100%;object-fit:cover;}
-.board-item .remove{position:absolute;top:2px;right:2px;width:20px;height:20px;background:rgba(255,255,255,.8);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;font-weight:bold;color:#ef4444;}
+.board-item .remove{position:absolute;top:4px;right:4px;width:24px;height:24px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:bold;color:#ef4444;box-shadow:0 2px 5px rgba(0,0,0,.2);}
 
 /* CHAT MESSENGER UI */
 .chat-window{background:#e5ddd5;border-radius:20px;max-width:500px;margin:0 auto 20px;box-shadow:0 10px 30px rgba(0,0,0,.1);display:flex;flex-direction:column;overflow:hidden;height:400px;}
@@ -211,6 +225,15 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
 .word-box-inline{display:flex;flex-wrap:wrap;gap:8px;background:#f1f5f9;padding:12px;border-radius:12px;margin-bottom:12px}
 .word-box-inline span{background:#fff;padding:4px 12px;border-radius:8px;font-size:.85rem;font-weight:600;border:1px solid var(--stroke2)}
 
+/* FLOATING NAVIGATION - FIXED Z-INDEX AND COLOR */
+.floating-nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(255,255,255,.98);backdrop-filter:blur(10px);border:1px solid var(--stroke);padding:10px 20px;border-radius:99px;display:flex;gap:15px;box-shadow:0 10px 30px rgba(0,0,0,.2);z-index:9999;transition:transform .4s cubic-bezier(.22,1,.36,1), opacity .4s;opacity:0;pointer-events:none;}
+.floating-nav.visible{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto;}
+.nav-btn{border:none;background:transparent;font-family:inherit;font-weight:700;font-size:.95rem;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:12px;transition:.2s;}
+.nav-btn:hover{background:var(--stroke);}
+/* FIX FOR NEXT BUTTON TEXT VISIBILITY */
+.nav-btn.next{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#ffffff !important; font-weight:800;}
+.nav-btn.next:hover{filter:brightness(1.1);background:linear-gradient(135deg,#3b82f6,#2563eb);}
+
 /* REPORT */
 .checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin:18px 0}
 .ck{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;background:#fff;border:1px solid var(--stroke);font-size:.9rem;font-weight:600;color:var(--muted);}
@@ -229,7 +252,7 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
 }
 @media print{
   body{background:#fff;color:#000;padding:0}
-  body::before,body::after,.hero,.tabs,.block:not(#b7),.actions,.checklist,.fb,.builder-bank,.chat-input-area,.live-checklist{display:none!important}
+  body::before,body::after,.hero,.tabs,.block:not(#b7),.actions,.checklist,.fb,.builder-bank,.chat-input-area,.live-checklist,.floating-nav,.social-post-footer{display:none!important}
   #reportPanel{display:block!important}
   #reportPre{background:#fff;color:#000;border:1px solid #999}
   .chat-window{height:auto;box-shadow:none;border:1px solid #ccc;}
@@ -309,12 +332,12 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
     </article>
 
     <article class="card" data-a="g">
-      <div class="card-top"><span class="exnum">EX 1.3</span><h3>Who said what?</h3><span class="badge drag">drag & drop</span></div>
-      <p class="instr"><b>Instructions:</b> complete the mini-dialogues with the correct words from the box.</p>
+      <div class="card-top"><span class="exnum">EX 1.3</span><h3>Who said what?</h3><span class="badge drag">drag & drop / tap</span></div>
+      <p class="instr"><b>Instructions:</b> Desktop: drag words to gaps. Mobile: tap a word, then tap the gap.</p>
       <div class="word-bank" id="wb13">
-        <div class="drag-word" draggable="true" data-w="brand new">brand new</div><div class="drag-word" draggable="true" data-w="loose-fitting">loose-fitting</div>
-        <div class="drag-word" draggable="true" data-w="well-dressed">well-dressed</div><div class="drag-word" draggable="true" data-w="trendy">trendy</div>
-        <div class="drag-word" draggable="true" data-w="casual">casual</div><div class="drag-word" draggable="true" data-w="fashionable">fashionable</div>
+        <div class="drag-word" data-w="brand new">brand new</div><div class="drag-word" data-w="loose-fitting">loose-fitting</div>
+        <div class="drag-word" data-w="well-dressed">well-dressed</div><div class="drag-word" data-w="trendy">trendy</div>
+        <div class="drag-word" data-w="casual">casual</div><div class="drag-word" data-w="fashionable">fashionable</div>
       </div>
       <div class="drop-text" id="dt13">
         1. A: "Wow, your dress is beautiful! Is it new?"<br>B: "Yes, it's <span class="drop-zone" data-ans="brand new"></span>. I bought it yesterday!"<br><br>
@@ -346,18 +369,38 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
     </article>
 
     <article class="card" data-a="g">
-      <div class="card-top"><span class="exnum">EX 1.5</span><h3>Context: Leo's Style</h3><span class="badge drag">drag & drop + writing</span></div>
-      <p class="instr"><b>Instructions:</b> drag the words into the text, then answer about YOURSELF.</p>
+      <div class="card-top"><span class="exnum">EX 1.5</span><h3>Context: Leo's Style</h3><span class="badge drag">social post</span></div>
+      <p class="instr"><b>Instructions:</b> Complete Leo's social media post by tapping the words, then tapping the gaps. When ready, hit "Post to Feed"!</p>
+      
       <div class="word-bank" id="wb15">
-        <div class="drag-word" draggable="true" data-w="trendy">trendy</div><div class="drag-word" draggable="true" data-w="casual">casual</div>
-        <div class="drag-word" draggable="true" data-w="loose-fitting">loose-fitting</div><div class="drag-word" draggable="true" data-w="matches">matches</div>
-        <div class="drag-word" draggable="true" data-w="second-hand">second-hand</div><div class="drag-word" draggable="true" data-w="borrow">borrow</div>
-        <div class="drag-word" draggable="true" data-w="brand new">brand new</div>
+        <div class="drag-word" data-w="trendy" data-group="15">trendy</div><div class="drag-word" data-w="casual" data-group="15">casual</div>
+        <div class="drag-word" data-w="loose-fitting" data-group="15">loose-fitting</div><div class="drag-word" data-w="matches" data-group="15">matches</div>
+        <div class="drag-word" data-w="second-hand" data-group="15">second-hand</div><div class="drag-word" data-w="borrow" data-group="15">borrow</div>
+        <div class="drag-word" data-w="brand new" data-group="15">brand new</div>
       </div>
-      <div class="drop-text" id="dt15">
-        "Hi, I'm Leo. I'm not really into <span class="drop-zone" data-ans="trendy"></span> clothes, because they are often expensive and go out of style very quickly. I usually prefer <span class="drop-zone" data-ans="casual"></span> things like jeans and hoodies, because they are comfortable for every day. My favourite item is a <span class="drop-zone" data-ans="loose-fitting"></span> black jacket. It's great because it <span class="drop-zone" data-ans="matches"></span> almost everything I own! Sometimes I buy <span class="drop-zone" data-ans="second-hand"></span> clothes online because it's cheaper and better for the environment. Last week, my friend asked to <span class="drop-zone" data-ans="borrow"></span> my favourite sneakers for a party, but I said no because they are <span class="drop-zone" data-ans="brand new"></span> and I don't want to get them dirty!"
+
+      <div class="social-post" id="leoPostContainer">
+        <div class="social-header">
+          <div class="social-avatar">L</div>
+          <div>
+            <div class="social-user">Leo Styles</div>
+            <div class="social-handle">@leo_fashion • Just now</div>
+          </div>
+        </div>
+        <div class="social-body">
+          Hi, I'm Leo. I'm not really into <span class="drop-zone" data-ans="trendy" data-group="15"></span> clothes, because they are often expensive and go out of style very quickly. I usually prefer <span class="drop-zone" data-ans="casual" data-group="15"></span> things like jeans and hoodies, because they are comfortable for every day. My favourite item is a <span class="drop-zone" data-ans="loose-fitting" data-group="15"></span> black jacket. It's great because it <span class="drop-zone" data-ans="matches" data-group="15"></span> almost everything I own! Sometimes I buy <span class="drop-zone" data-ans="second-hand" data-group="15"></span> clothes online because it's cheaper and better for the environment. Last week, my friend asked to <span class="drop-zone" data-ans="borrow" data-group="15"></span> my favourite sneakers for a party, but I said no because they are <span class="drop-zone" data-ans="brand new" data-group="15"></span> and I don't want to get them dirty! 👕✨
+        </div>
+        <div class="social-actions-bar">
+          <span id="likeBtnContainer">❤️ <span id="likeCount">0</span> Likes</span>
+          <span>💬 <span id="commentCount">0</span> Comments</span>
+          <span>🔄 Share</span>
+        </div>
+        <div class="social-post-footer">
+          <button class="btn primary" id="check15" style="flex:1; background:linear-gradient(135deg,#3b82f6,#2563eb); margin:0;">🚀 Post to Feed</button>
+          <button class="btn ghost" id="reset15" style="margin:0;">Reset</button>
+        </div>
       </div>
-      <div class="actions"><button class="btn primary" id="check15">Check gaps</button><button class="btn ghost" id="reset15">Reset gaps</button></div>
+      
       <div class="fb" id="fb15"></div>
       <div class="pq">
         <h4>💬 Now answer about yourself:</h4>
@@ -374,55 +417,34 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
   <section class="block" id="b2">
     <div class="block-head" style="--acc:#f59e0b"><h2><span class="dot"></span>Block 2 · Visual Vocabulary</h2><p>Goal: learn clothing items and accessories visually.</p></div>
     <article class="card" data-a="y">
-      <div class="card-top"><span class="exnum">EX 2.1</span><h3>Clothes & Accessories</h3><span class="badge drag">drag & drop</span></div>
-      <p class="instr"><b>Instructions:</b> drag the correct word from the box and drop it under the matching photo.</p>
+      <div class="card-top"><span class="exnum">EX 2.1</span><h3>Clothes & Accessories</h3><span class="badge drag">drag & drop / tap</span></div>
+      <p class="instr"><b>Instructions:</b> Desktop: drag words under photos. Mobile: tap a word, then tap the box under the photo.</p>
       <div class="word-bank" id="wb21">
-        <div class="drag-word" draggable="true" data-w="a purse">a purse</div><div class="drag-word" draggable="true" data-w="a belt">a belt</div>
-        <div class="drag-word" draggable="true" data-w="a headscarf">a headscarf</div><div class="drag-word" draggable="true" data-w="a necklace">a necklace</div>
-        <div class="drag-word" draggable="true" data-w="a scrunchie">a scrunchie</div><div class="drag-word" draggable="true" data-w="a claw clip">a claw clip</div>
-        <div class="drag-word" draggable="true" data-w="heels">heels</div><div class="drag-word" draggable="true" data-w="an undershirt">an undershirt</div>
-        <div class="drag-word" draggable="true" data-w="a shirt">a shirt</div><div class="drag-word" draggable="true" data-w="a T-shirt">a T-shirt</div>
-        <div class="drag-word" draggable="true" data-w="tights">tights</div><div class="drag-word" draggable="true" data-w="a blazer">a blazer</div>
+        <div class="drag-word" data-w="a purse" data-group="21">a purse</div><div class="drag-word" data-w="a belt" data-group="21">a belt</div>
+        <div class="drag-word" data-w="a headscarf" data-group="21">a headscarf</div><div class="drag-word" data-w="a necklace" data-group="21">a necklace</div>
+        <div class="drag-word" data-w="a scrunchie" data-group="21">a scrunchie</div><div class="drag-word" data-w="a claw clip" data-group="21">a claw clip</div>
+        <div class="drag-word" data-w="heels" data-group="21">heels</div><div class="drag-word" data-w="an undershirt" data-group="21">an undershirt</div>
+        <div class="drag-word" data-w="a shirt" data-group="21">a shirt</div><div class="drag-word" data-w="a T-shirt" data-group="21">a T-shirt</div>
+        <div class="drag-word" data-w="tights" data-group="21">tights</div><div class="drag-word" data-w="a blazer" data-group="21">a blazer</div>
+        <div class="drag-word" data-w="bobby pins/hairpins" data-group="21">bobby pins/hairpins</div><div class="drag-word" data-w="long sleeve" data-group="21">long sleeve</div>
       </div>
       
       <div class="compact-grid" id="grid21">
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (a purse) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="a purse">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (a belt) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="a belt">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (a headscarf) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="a headscarf">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (a necklace) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="a necklace">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (a scrunchie) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="a scrunchie">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (a claw clip) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="a claw clip">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (heels) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="heels">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (an undershirt) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="an undershirt">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (a shirt) НИЖЕ В src="" 👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="a shirt">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (a T-shirt) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="a T-shirt">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (tights) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="tights">Drop here</div></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (a blazer) НИЖЕ В src="" 👇👇👇 -->
-        <div class="grid-item"><div class="grid-img-ph"><img src=""></div><div class="drop-zone-img" data-ans="a blazer">Drop here</div></div>
-
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-80.vkuserphoto.ru/s/v1/ig2/DVMeYImUTu5lpqWN4p5ZY6R86wVwJTAa165n53o_-Ur2SD14dO0Yi9kJSVOE1fvzO07mmnM3DEoPs1vDyQefe0gy.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><div class="drop-zone-img" data-ans="a purse" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://i.pinimg.com/736x/57/02/eb/5702ebcf6f3d1a70a181e845e33ff9c7.jpg"></div><div class="drop-zone-img" data-ans="a belt" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-71.vkuserphoto.ru/s/v1/ig2/ZIxUYhljJAh9EcjAqy6Q6DvdGMLFc9JOHvgckB5ZVOot78SSJgRG5urmL6cr3SE8w5dszHV5SoaYgsCnC0CLdchs.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><div class="drop-zone-img" data-ans="a headscarf" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-4.vkuserphoto.ru/s/v1/ig2/snbz7atQhhNBb6pv7KT1qyFXgS8kli5V56NGok1bv10eXU1wEyJd108M0JOMurWLH-iMAttiTQA08GBLa8DZyQveQbx6QA.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><div class="drop-zone-img" data-ans="a necklace" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-66.vkuserphoto.ru/s/v1/ig2/4bnRpfRAw35GSVvjB-UijiQIzk-d8KhVfty9IHGjxwguz3RtZSGm7eKVbSiNPuYc3Jg2EiM3NPJNyPSd0HHzYLMkp8Jd6w.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=FvyM5jV0McDnbyFzByr3gXGd6K7DvMqwCN4mYIu2TbY&cs=1512x0"></div><div class="drop-zone-img" data-ans="a scrunchie" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-6.vkuserphoto.ru/s/v1/ig2/4mGriwotuVZ0eCFGLQEmj-uKIpIUdPQNZb2nXh-QEAw9blC90jUXZRYR0il1918TbgCW-YWtlGTPU-Fcu3pBKGNsDIKKiA.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=GfaZsGz8viwlFF37qO8KSn-iJCiC8H4oV22hErA90No&cs=1512x0"></div><div class="drop-zone-img" data-ans="a claw clip" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-50.vkuserphoto.ru/s/v1/ig2/86XsO7p__JZ4mbvTODaZ6liiuOiYo7uvCz3jjehurmLlZzCgeBvUltqLsniehsDmmkUmMF18WzFMsDuYEj8IjWGq.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=29Cc3VTK6OTUB5NfyrpJ_l3wc-2ZxcRVUU1Bnrjvbf4&cs=1512x0"></div><div class="drop-zone-img" data-ans="heels" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-56.vkuserphoto.ru/s/v1/ig2/BJG2UjbXl-wQXDhKPH3S7_1ySxVMc5FSLOlcuuWVBQdZ2IMkoJaZUdozeHdSG6RwBLmB228m5NRtiqVkwm13-5fp.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=SQL0BzzsER_lySvRCxNDzqieaxLlfWqzia4MzOY4y_k&cs=1512x0"></div><div class="drop-zone-img" data-ans="an undershirt" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-48.vkuserphoto.ru/s/v1/ig2/UE96iMRa-XMxfKmez2bO75ztavznCSvqYlcDY62BpFYzMD1oCrAugynTMWaQAuPNvd73GUl4fI6WP56nwPxs7wyd9Hxfcg.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><div class="drop-zone-img" data-ans="a shirt" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-6.vkuserphoto.ru/s/v1/ig2/8ylLluLJcRrEyz_dOQA7yhv4VPkM9CsctcucTfDglNbMrGIPyEjEQPcDI1bpj1QQ5k29uALr9Cvk2g8Sw0D3mrSo0fb0dQ.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><div class="drop-zone-img" data-ans="a T-shirt" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-49.vkuserphoto.ru/s/v1/ig2/jU7cG9_FmgbD8i7rPC5CRDCDODzovg37uMzR5uDGvKXh8jI8_t_p2u5uj45jJwp2kRsKZS62B1bm0FnhNH-SzEMhyw5GCA.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,564x564&from=bu&u=bF_eyvBtP_J0jrpZTtAwgJr2LOOIKQqsXnu3fXZZrGE&cs=564x0"></div><div class="drop-zone-img" data-ans="tights" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-8.vkuserphoto.ru/s/v1/ig2/byw9n4C5IAP1i8ueVUGTozfI95lgJl4fcCJXlKqOpMzxQegAYaeRpr0IJ_iie2fMxvePKFsXmIv9v22iwUPnq8lr.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><div class="drop-zone-img" data-ans="a blazer" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-77.vkuserphoto.ru/s/v1/ig2/eJUitwrOPr_aY0z8rv-P6Q3y215WLdwBAwW1YXC9ShFHouluUbhOl61pxmaQ_oEI14aEG-0BS-07kuCAegCCbRBJeg5KhQ.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=kBlGsNlFHUURQqi2BVo3ZnkDkbUeCGrCf1wRutCqFcc&cs=1512x0"></div><div class="drop-zone-img" data-ans="bobby pins/hairpins" data-group="21">Drop here</div></div>
+        <div class="grid-item"><div class="grid-img-ph"><img src="https://sun9-84.vkuserphoto.ru/s/v1/ig2/Bu3dMg_d-ZaXlPtpE6qB2UROB0vggbvjQahdbDkYFkYbDqrAK1V5e4NBZcVSZKwwa8XVfV95gnLy_5SQNHCZTiwgPsuqrQ.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=x7JczrbH-UZzX5lEHxfIsrbhHCFS0bNbR5rb08pHtdA&cs=1512x0"></div><div class="drop-zone-img" data-ans="long sleeve" data-group="21">Drop here</div></div>
+      
       </div>
 
       <div class="actions"><button class="btn primary" id="check21">Check answers</button><button class="btn ghost" id="reset21">Reset</button></div>
@@ -558,7 +580,7 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
 
     <article class="card" data-a="b">
       <div class="card-top"><span class="exnum">EX 4.2</span><h3>The Autumn Style Guide</h3><span class="badge drag">web simulation</span></div>
-      <p class="instr"><b>Instructions:</b> read the article from "StyleMag Online" and complete it with the phrasal verbs.</p>
+      <p class="instr"><b>Instructions:</b> read the article from "StyleMag Online" and complete it with the phrasal verbs (drag or tap).</p>
       
       <div class="web-sim">
         <div class="web-header">
@@ -567,16 +589,16 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
         </div>
         <div class="web-body">
           <h2>5 Autumn Outfits You Need to Try</h2>
-          <p>Autumn is here! 🍂 It's time to update your wardrobe. When the weather gets cold, the first thing you do is <span class="drop-zone" data-ans="put on" style="border-color:#3b82f6"></span> a cozy sweater. But don't forget to <span class="drop-zone" data-ans="wrap up" style="border-color:#3b82f6"></span> with a thick scarf and a beanie when you go outside!</p>
-          <p>If you have a date night, you might want to <span class="drop-zone" data-ans="dress up" style="border-color:#3b82f6"></span> in something elegant, like a smart blazer. A leather belt can really <span class="drop-zone" data-ans="go with" style="border-color:#3b82f6"></span> a simple dress and make it look expensive.</p>
-          <p>Finally, a golden rule of autumn shopping: never buy boots without feeling them on your feet. Always <span class="drop-zone" data-ans="try on" style="border-color:#3b82f6"></span> shoes in the shop to make sure they are comfortable!</p>
+          <p>Autumn is here! 🍂 It's time to update your wardrobe. When the weather gets cold, the first thing you do is <span class="drop-zone" data-ans="put on" data-group="42" style="border-color:#3b82f6"></span> a cozy sweater. But don't forget to <span class="drop-zone" data-ans="wrap up" data-group="42" style="border-color:#3b82f6"></span> with a thick scarf and a beanie when you go outside!</p>
+          <p>If you have a date night, you might want to <span class="drop-zone" data-ans="dress up" data-group="42" style="border-color:#3b82f6"></span> in something elegant, like a smart blazer. A leather belt can really <span class="drop-zone" data-ans="go with" data-group="42" style="border-color:#3b82f6"></span> a simple dress and make it look expensive.</p>
+          <p>Finally, a golden rule of autumn shopping: never buy boots without feeling them on your feet. Always <span class="drop-zone" data-ans="try on" data-group="42" style="border-color:#3b82f6"></span> shoes in the shop to make sure they are comfortable!</p>
         </div>
       </div>
 
       <div class="word-bank" id="wb42">
-        <div class="drag-word" draggable="true" data-w="go with">go with</div><div class="drag-word" draggable="true" data-w="put on">put on</div>
-        <div class="drag-word" draggable="true" data-w="wrap up">wrap up</div><div class="drag-word" draggable="true" data-w="dress up">dress up</div>
-        <div class="drag-word" draggable="true" data-w="try on">try on</div>
+        <div class="drag-word" data-w="go with" data-group="42">go with</div><div class="drag-word" data-w="put on" data-group="42">put on</div>
+        <div class="drag-word" data-w="wrap up" data-group="42">wrap up</div><div class="drag-word" data-w="dress up" data-group="42">dress up</div>
+        <div class="drag-word" data-w="try on" data-group="42">try on</div>
       </div>
       
       <div class="actions"><button class="btn primary" id="check42">Check</button><button class="btn ghost" id="reset42">Reset</button></div>
@@ -587,19 +609,10 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
       <div class="card-top"><span class="exnum">EX 4.3</span><h3>Autumn Outfits</h3><span class="badge write">visual + writing</span></div>
       <p class="instr"><b>Instructions:</b> look at the 4 autumn outfits below, then answer the questions using the new vocabulary.</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:20px;">
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Outfit 1) НИЖЕ В src="" 👇👇👇 -->
         <div class="img-placeholder" id="ph43_1"><img src="https://sun9-16.vkuserphoto.ru/s/v1/ig2/oJtY5j6ZzI868R45wZw77t0SZutmip1HBytHFt_C0TwhiNvoOBKoYn71FXYHLCFpSJkxyGctgcCma9Pevyyhe9xi.jpg?quality=95&as=32x44,48x66,72x99,108x148,160x219,240x329,360x493,480x657,540x739,640x876,720x986,870x1191&from=bu&u=p2L38OUKVoaPAEYwczqQmR6WY9_bIjrzvcfIUnt1O54&cs=870x0"><span>Outfit 1</span></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Outfit 2) НИЖЕ В src="" 👇👇👇 -->
         <div class="img-placeholder" id="ph43_2"><img src="https://sun9-55.vkuserphoto.ru/s/v1/ig2/wDBmGNR8Rg2WxkpUu-Ryimr0GZXhb87lzk3DktITMEN76btKsB_E1AAcMXsfvvyS4ig3m5lGGazI6R_F3CKU38m7Avusrg.jpg?quality=95&as=32x43,48x64,72x96,108x144,160x213,240x320,360x480,480x640,540x720,640x853,720x960,1080x1440,1280x1707,1440x1920,1920x2560&from=bu&u=XwDHFAYzr3KbT3smk6qjz-_Q48j9QE4ux4y8GbCqX5k&cs=1920x0"><span>Outfit 2</span></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Outfit 3) НИЖЕ В src="" 👇👇👇 -->
         <div class="img-placeholder" id="ph43_3"><img src="https://sun9-70.vkuserphoto.ru/s/v1/ig2/CR3EWvbza2fqsLYynZdSkspXBX8hWcNDi9Wm5mQNbwlSc98i4cjeEGlGEYfu62LNG3lXfcGBtCNZ05umawKGOfMQ.jpg?quality=95&as=32x40,48x60,72x90,108x135,160x200,240x300,360x450,480x600,540x675,640x800,720x900,736x920&from=bu&cs=736x0"><span>Outfit 3</span></div>
-        
-        <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Outfit 4) НИЖЕ В src="" 👇👇👇 -->
         <div class="img-placeholder" id="ph43_4"><img src="https://sun9-81.vkuserphoto.ru/s/v1/ig2/5V5mp4EpVKQJfwqyFO-Eqx7QEoU0CzkY_3XjjdRFMf162URsRlN5se7W_rOZAKo_wLzDx6fEuvXvizqGPJQYavhSZM60xA.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=Kab5VwIL3gCQoU2cLhDrH02YIfFrZLyyg80s6B419c4&cs=1512x0"><span>Outfit 4</span></div>
-
       </div>
       <div class="line">1. Which outfit (1, 2, 3, or 4) is closest to your personal style? Why?<textarea class="inp" id="q43_1" data-open style="min-height:70px;margin-top:8px"></textarea></div>
       <div class="line">2. How would you adjust it to make it perfect for you? (Use: <i>add, change, go with</i>)<textarea class="inp" id="q43_2" data-open style="min-height:70px;margin-top:8px"></textarea></div>
@@ -614,72 +627,31 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
     <div class="block-head" style="--acc:#a855f7"><h2><span class="dot"></span>Block 5 · The Outfit Builder</h2><p>Goal: build your dream outfit and explain your choices.</p></div>
     <article class="card" data-a="p">
       <div class="card-top"><span class="exnum">EX 5.1</span><h3>Create Your Look</h3><span class="badge drag">interactive</span></div>
-      <p class="instr"><b>Instructions:</b> Drag items to the board to create your look. On mobile, just tap an item to select it, then tap the board to place it."</p>
+      <p class="instr"><b>Instructions:</b> Drag items to the board to create your look. On mobile, just tap an item to select it, then tap the board to place it.</p>
       <div class="builder-container">
         <div class="builder-bank">
           <h4>🛍️ The Shop</h4>
           <div class="compact-grid" id="shopGrid">
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (T-shirt) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-6.vkuserphoto.ru/s/v1/ig2/8ylLluLJcRrEyz_dOQA7yhv4VPkM9CsctcucTfDglNbMrGIPyEjEQPcDI1bpj1QQ5k29uALr9Cvk2g8Sw0D3mrSo0fb0dQ.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><span class="grid-label">T-shirt</span></div>
-            
-            <!-- 👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Shirt) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-48.vkuserphoto.ru/s/v1/ig2/UE96iMRa-XMxfKmez2bO75ztavznCSvqYlcDY62BpFYzMD1oCrAugynTMWaQAuPNvd73GUl4fI6WP56nwPxs7wyd9Hxfcg.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=KmdLpKC7yFsFq9fvN5ofCbSi_fWcNm5SjozQsyEDIMU&cs=1512x0"></div><span class="grid-label">Shirt</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Undershirt) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-63.vkuserphoto.ru/s/v1/ig2/CskuRg9QpM3jc1sQb_GBpUSLoTXjoZvpnXAY0FwMaLUmEWyIta4PJQ2zKJvmgiM79mW26DEZG3ut4Ab-DP7n_Pwy.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><span class="grid-label">Undershirt</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Sweater) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-50.vkuserphoto.ru/s/v1/ig2/zV6YoaXi0eRMYRW4WZlRXqqEj9eo_BImYshZhznXnXb__RnRmMUBXiWSOb6s_7rvtmlVBK2_M0jYDL6Q8JNU-Nzj.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=h-q17WIus76uVhFERnTBp5L-Nysx4Nn9cE3q_rmhIrw&cs=1512x0"></div><span class="grid-label">Sweater</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Blazer) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-8.vkuserphoto.ru/s/v1/ig2/byw9n4C5IAP1i8ueVUGTozfI95lgJl4fcCJXlKqOpMzxQegAYaeRpr0IJ_iie2fMxvePKFsXmIv9v22iwUPnq8lr.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=B8nWQvo9vG_K39JTthmRS419dAsFPeYuej9SSpOsDYg&cs=1512x0"></div><span class="grid-label">Blazer</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Baggy jeans) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-9.vkuserphoto.ru/s/v1/ig2/W5N8aAOuKQbXIrP7Bg5sv6xQkqq8YZJeEtahCOVPcsSMZulBkujnEosQs5taH-QebsX_ujnpnMQS2jJxtueIPby0.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><span class="grid-label">Baggy jeans</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Skinny jeans) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://i.pinimg.com/736x/63/26/cb/6326cb6ab60bc772ddeda23c5de25906.jpg"></div><span class="grid-label">Skinny jeans</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Skirt) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-49.vkuserphoto.ru/s/v1/ig2/ShTcavuSIe_e44CHzD7-W0gQHzO-qD3aKbU3vzzNiGxeLf45LM0O4l7cCE-k3RVz3s4mO9EGdIfalW-bydcPQnO5591s8w.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=OkVR-p7lbNk_Uq85CeXTRSVxffJYqOYZHNga3D2Gm0E&cs=1512x0"></div><span class="grid-label">Skirt</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Tights) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://i.pinimg.com/736x/ea/56/e5/ea56e585d4f955b6611b52e5b29bbbc7.jpg"></div><span class="grid-label">Tights</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Sneakers) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-52.vkuserphoto.ru/s/v1/ig2/G7cvP2Z4Rezk1xzawx45cacCKgXJkWfwno-NqCe8tKmawIgj71UhXja-br9wC9u9rgusnBtitrAGYgxeOVhgXDtj.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=O1Kb5_lx3VnpulGUEmPanbY7D-v2fESMY4VFscdmBHk&cs=1512x0"></div><span class="grid-label">Sneakers</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Heels) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-72.vkuserphoto.ru/s/v1/ig2/H3vtHL599rE3qCUsoC7cYmyIUO62WdP7ft-JjBD6jpJ8UyJ9BH0k-TWnBs-SrkJfnlcl5OuP9U676NOYcYZ91Hx2v96bFg.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><span class="grid-label">Heels</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Boots) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-85.vkuserphoto.ru/s/v1/ig2/lNqkmK5eIB07a6HuOHz9AfSPe1Xm2RPxWZF4Qs_Hrf5qluEFQYYBFK9lGGGhxpAPLdgJYhWjQ3dUPFB5lA5c0__uKKAhfA.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=rBoaVxfGpgRN7lahDUhdUJ3ZfIebZkiwD9OtDYNWdZg&cs=1512x0"></div><span class="grid-label">Boots</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Purse) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-80.vkuserphoto.ru/s/v1/ig2/DVMeYImUTu5lpqWN4p5ZY6R86wVwJTAa165n53o_-Ur2SD14dO0Yi9kJSVOE1fvzO07mmnM3DEoPs1vDyQefe0gy.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=XR1SMX7ZEoFIxBr_WotgkKgXxOWbJAoLDFaN0y34aEY&cs=1512x0"></div><span class="grid-label">Purse</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Tote bag) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-82.vkuserphoto.ru/s/v1/ig2/sj68eihR2Tp-Xr45sCn_iUUlGjfGPlQHhlahP0sS45WRTaef6q9ws7JR1fasqFgKCnCalwv3VkFaamR5kb7VBlrPOX3YpQ.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=0u-WC4rOw_2OjoaKZsWAPBVlp-snEVHOJLjyvc5AckY&cs=1512x0"></div><span class="grid-label">Tote bag</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Belt) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://i.pinimg.com/736x/57/02/eb/5702ebcf6f3d1a70a181e845e33ff9c7.jpg"></div><span class="grid-label">Belt</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Necklace) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-4.vkuserphoto.ru/s/v1/ig2/snbz7atQhhNBb6pv7KT1qyFXgS8kli5V56NGok1bv10eXU1wEyJd108M0JOMurWLH-iMAttiTQA08GBLa8DZyQveQbx6QA.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><span class="grid-label">Necklace</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Earrings) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-4.vkuserphoto.ru/s/v1/ig2/lrKJn1o-OytVvy3kMxuJI0IwudhOoHaOhH1ow9moda60u99dIkyWbqO6PVyn83VHBfDvU5wCzpIB06cjvIv21qDt.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=ynu6OBQJxTQgl4sqXlOqR5Ar8MUEsSWkrThfmiI5N18&cs=1512x0"></div><span class="grid-label">Earrings</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Scarf) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-47.vkuserphoto.ru/s/v1/ig2/OrApZBZfctQ6hbZoQXccp4b9Ef2wwxv0xipRn2GmA_JeflWtzDw3EbvR8cxHl53eHrGvyy9YBJT9DsjSLhIqltoA.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><span class="grid-label">Scarf</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Claw clip) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-6.vkuserphoto.ru/s/v1/ig2/4mGriwotuVZ0eCFGLQEmj-uKIpIUdPQNZb2nXh-QEAw9blC90jUXZRYR0il1918TbgCW-YWtlGTPU-Fcu3pBKGNsDIKKiA.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&u=GfaZsGz8viwlFF37qO8KSn-iJCiC8H4oV22hErA90No&cs=1512x0"></div><span class="grid-label">Claw clip</span></div>
-            
-            <!-- 👇👇👇 ВСТАВЬТЕ ССЫЛКУ НА ФОТО (Scrunchie) НИЖЕ В src="" 👇👇👇 -->
             <div class="grid-item"><div class="grid-img-ph builder-item" draggable="true"><img src="https://sun9-51.vkuserphoto.ru/s/v1/ig2/1grIvDWnD8K28ZVUNjgjLlM_57yd6KYeS4gkBHbyne3HmrusMNXxtdhzRirx4ire4f9crFcDYKqiZqsuAfMZbFoZdq59TQ.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,1512x1512&from=bu&cs=1512x0"></div><span class="grid-label">Scrunchie</span></div>
-
           </div>
         </div>
         <div class="builder-board" id="outfitBoard">
@@ -759,7 +731,6 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
       <p class="instr"><b>Instructions:</b> look at the photo of Martha, Lily, and Sasha. Answer the questions about their style and their personality. Write a short profile for Part 3.</p>
       
       <div class="img-placeholder" style="aspect-ratio: 4/3; max-height: 600px; margin-bottom:20px; justify-content: center;">
-        <!-- ВАША КАРТИНКА С ДЕВУШКАМИ УЖЕ ВСТАВЛЕНА НИЖЕ -->
         <img src="https://psv4.vkuserphoto.ru/s/v1/d2/olzU_mpEuKhhn40vT2YgaP89W9NioaUzLJ-sVlsWe52HicOx53vANmr63LxRdyCxnRJIegpts71l8UXXZ0pVggfOPWke76C_Qw5KDEffTgCM1LOPZtty5uSJg_q283HF7EhZoI7kK9xm/image-3.png" alt="Fashion Image" id="fashionImg" style="display:none; object-fit: contain;">
         <span id="imgPlaceholderText" style="display:none;">Image placeholder</span>
       </div>
@@ -804,6 +775,12 @@ textarea.inp{min-height:110px;resize:vertical;line-height:1.6}
     </article>
   </section>
 
+  <!-- FLOATING NAVIGATION -->
+  <div class="floating-nav" id="floatingNav">
+    <button class="nav-btn prev" id="navPrev"> Back</button>
+    <button class="nav-btn next" id="navNext">Next →</button>
+  </div>
+
 </div>
 
 <script>
@@ -824,10 +801,13 @@ var TASK_LABELS={
 var BLOCK_TASKS={b1:['1.1','1.2','1.3','1.4','1.5','1.5P'],b2:['2.1','2.1P'],b3:['3.1','3.2','3.3','3.4'],b4:['4.1','4.2','4.3'],b5:['5.1'],b6:['6.1','6.2','6.3']};
 var state={name:'',scores:{},open:{},done:{}};
 
-function persist(){try{localStorage.setItem('u2v8_final',JSON.stringify(state));}catch(e){}}
-function restore(){try{var raw=localStorage.getItem('u2v8_final');if(raw){var s=JSON.parse(raw);if(s&&typeof s==='object'){state.name=s.name||'';state.scores=s.scores||{};state.open=s.open||{};state.done=s.done||{};}}}catch(e){}}
+function persist(){try{localStorage.setItem('u2v12_final',JSON.stringify(state));}catch(e){}}
+function restore(){try{var raw=localStorage.getItem('u2v12_final');if(raw){var s=JSON.parse(raw);if(s&&typeof s==='object'){state.name=s.name||'';state.scores=s.scores||{};state.open=s.open||{};state.done=s.done||{};}}}catch(e){}}
 
 function fb(id,type,html){var el=$('#'+id);if(!el)return;el.className='fb show '+type;el.innerHTML=html;}
+
+var currentBlockIndex = 0;
+var blockIds = ['b1','b2','b3','b4','b5','b6','b7'];
 
 function refresh(){
   var done=TASKS.filter(function(t){return state.done[t];}).length;
@@ -842,15 +822,18 @@ function refresh(){
     var d=document.createElement('div');d.className='ck'+(state.done[t]?' done':'');
     d.innerHTML='<span class="box">'+(state.done[t]?'✓':'')+'</span>'+TASK_LABELS[t];cl.appendChild(d);
   });
+  updateFloatingNav();
 }
 function markDone(t){state.done[t]=true;persist();refresh();}
 
-$$('.tab').forEach(function(tab){
+$$('.tab').forEach(function(tab, index){
   tab.addEventListener('click',function(){
+    currentBlockIndex = index;
     $$('.tab').forEach(function(t){t.classList.remove('active');});
     $$('.block').forEach(function(b){b.classList.remove('active');});
     tab.classList.add('active');$('#'+tab.getAttribute('data-t')).classList.add('active');
     window.scrollTo({top:0,behavior:'smooth'});
+    updateFloatingNav();
   });
 });
 
@@ -859,6 +842,36 @@ $$('[data-open]').forEach(function(el){
   el.addEventListener('input',function(){state.open[el.id]=el.value;persist();});
 });
 var nameInput=$('#studentName');nameInput.value=state.name||'';nameInput.addEventListener('input',function(){state.name=nameInput.value;persist();});
+
+/* FLOATING NAV LOGIC */
+var floatingNav = $('#floatingNav');
+function updateFloatingNav() {
+  $('#navPrev').style.visibility = currentBlockIndex === 0 ? 'hidden' : 'visible';
+  $('#navNext').style.visibility = currentBlockIndex === blockIds.length - 1 ? 'hidden' : 'visible';
+}
+$('#navPrev').addEventListener('click', function(){
+  if(currentBlockIndex > 0) {
+    currentBlockIndex--;
+    $$('.tab')[currentBlockIndex].click();
+  }
+});
+$('#navNext').addEventListener('click', function(){
+  if(currentBlockIndex < blockIds.length - 1) {
+    currentBlockIndex++;
+    $$('.tab')[currentBlockIndex].click();
+  }
+});
+
+window.addEventListener('scroll', function(){
+  var activeBlock = $('.block.active');
+  if(!activeBlock) return;
+  var rect = activeBlock.getBoundingClientRect();
+  if(rect.bottom < window.innerHeight + 300) {
+    floatingNav.classList.add('visible');
+  } else {
+    floatingNav.classList.remove('visible');
+  }
+});
 
 /* MATCHING GENERIC */
 function setupMatching(leftId,rightId,checkBtn,resetBtn,fbId,taskKey,total){
@@ -890,48 +903,175 @@ setupMatching('mLeft1','mRight1','#check11','#reset11','#fb11','1.1',12);
 setupMatching('mLeft4','mRight4','#check41','#reset41','#fb41','4.1',5);
 setupMatching('mLeft6','mRight6','#check61','#reset61','#fb61','6.1',5);
 
-/* DRAG DROP GENERIC */
-function setupDragDrop(bankId,zoneClass,checkBtn,resetBtn,fbId,taskKey,total){
-  var dragged=null;
+/* UNIVERSAL DRAG & TAP LOGIC */
+var selectedMobileWord = null;
+
+function setupUniversalDragDrop(bankId, zoneSelector, checkBtn, resetBtn, fbId, taskKey, total) {
+  var dragged = null;
+  
   $$('#'+bankId+' .drag-word').forEach(function(w){
+    w.setAttribute('draggable', 'true');
     w.addEventListener('dragstart',function(e){dragged=this;e.dataTransfer.setData('text',this.getAttribute('data-w'));setTimeout(function(){w.style.opacity='.5';},0);});
     w.addEventListener('dragend',function(){this.style.opacity='1';dragged=null;});
-    w.addEventListener('touchstart',function(){dragged=this;this.style.opacity='.5';},{passive:true});
-    w.addEventListener('touchend',function(e){
-      this.style.opacity='1';var t=e.changedTouches[0];var target=document.elementFromPoint(t.clientX,t.clientY);
-      if(target&&target.classList.contains(zoneClass)&&!target.classList.contains('filled'))fillZone(target,dragged);dragged=null;
-    });
-  });
-  $$('.'+zoneClass).forEach(function(z){
-    z.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('hover');});
-    z.addEventListener('dragleave',function(){this.classList.remove('hover');});
-    z.addEventListener('drop',function(e){e.preventDefault();this.classList.remove('hover');if(dragged&&!this.classList.contains('filled'))fillZone(this,dragged);});
-    z.addEventListener('click',function(){
-      if(this.classList.contains('filled')){
-        var w=this.getAttribute('data-w');var bw=$$('#'+bankId+' .drag-word').find(function(e){return e.getAttribute('data-w')===w;});
-        if(bw)bw.classList.remove('placed');this.textContent=this.classList.contains('drop-zone-img')?'Drop here':'';this.classList.remove('filled','ok','bad');this.removeAttribute('data-w');
+    
+    w.addEventListener('click', function(e){
+      e.preventDefault();
+      if(selectedMobileWord === this) {
+        this.classList.remove('selected-mobile'); selectedMobileWord = null;
+        $$(zoneSelector).forEach(function(z){z.classList.remove('tap-hover');});
+      } else {
+        if(selectedMobileWord) selectedMobileWord.classList.remove('selected-mobile');
+        this.classList.add('selected-mobile'); selectedMobileWord = this;
+        $$(zoneSelector+':not(.filled)').forEach(function(z){z.classList.add('tap-hover');});
       }
     });
   });
-  function fillZone(z,w){z.textContent=w.getAttribute('data-w');z.setAttribute('data-w',w.getAttribute('data-w'));z.classList.add('filled');w.classList.add('placed');}
-  
-  $(checkBtn).addEventListener('click',function(){
-    var c=0;$$('.'+zoneClass).forEach(function(z){
-      var a=z.getAttribute('data-ans'),v=z.getAttribute('data-w');z.classList.remove('ok','bad');
-      if(v===a){z.classList.add('ok');c++;}else if(v){z.classList.add('bad');}
+
+  $$(zoneSelector).forEach(function(z){
+    z.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('hover');});
+    z.addEventListener('dragleave',function(){this.classList.remove('hover');});
+    z.addEventListener('drop',function(e){e.preventDefault();this.classList.remove('hover');if(dragged&&!this.classList.contains('filled'))fillZone(this,dragged);});
+    
+    z.addEventListener('click', function(e){
+      e.preventDefault();
+      if(selectedMobileWord && !this.classList.contains('filled')) {
+        fillZone(this, selectedMobileWord);
+        selectedMobileWord.classList.remove('selected-mobile'); selectedMobileWord = null;
+        $$(zoneSelector).forEach(function(z){z.classList.remove('tap-hover');});
+      } else if(this.classList.contains('filled')) {
+        var wVal = this.getAttribute('data-w');
+        var bankWord = $$('#'+bankId+' .drag-word').find(function(el){return el.getAttribute('data-w')===wVal;});
+        if(bankWord) bankWord.classList.remove('placed');
+        this.textContent = this.classList.contains('drop-zone-img') ? 'Drop here' : '';
+        this.classList.remove('filled','ok','bad'); this.removeAttribute('data-w');
+      }
     });
+  });
+
+  function fillZone(z,w){z.textContent=w.getAttribute('data-w');z.setAttribute('data-w',w.getAttribute('data-w'));z.classList.add('filled');w.classList.add('placed');w.classList.remove('selected-mobile');}
+
+  $(checkBtn).addEventListener('click',function(){
+    var c=0;$$(zoneSelector).forEach(function(z){var a=z.getAttribute('data-ans'),v=z.getAttribute('data-w');z.classList.remove('ok','bad');if(v===a){z.classList.add('ok');c++;}else if(v){z.classList.add('bad');}});
     state.scores[taskKey]={c:c,t:total};markDone(taskKey);
     fb(fbId,c===total?'ok':'warn','<b>'+c+'/'+total+'</b> correct.'+(c===total?' Excellent! 🎉':''));
   });
+  
   $(resetBtn).addEventListener('click',function(){
-    $$('.'+zoneClass).forEach(function(z){z.textContent=z.classList.contains('drop-zone-img')?'Drop here':'';z.classList.remove('filled','ok','bad');z.removeAttribute('data-w');});
-    $$('#'+bankId+' .drag-word').forEach(function(w){w.classList.remove('placed');});$(fbId).className='fb';
+    $$(zoneSelector).forEach(function(z){z.textContent=z.classList.contains('drop-zone-img')?'Drop here':'';z.classList.remove('filled','ok','bad','tap-hover');z.removeAttribute('data-w');});
+    $$('#'+bankId+' .drag-word').forEach(function(w){w.classList.remove('placed','selected-mobile');});
+    selectedMobileWord = null; $(fbId).className='fb';
   });
 }
-setupDragDrop('wb13','drop-zone','#check13','#reset13','#fb13','1.3',6);
-setupDragDrop('wb15','drop-zone','#check15','#reset15','#fb15','1.5',7);
-setupDragDrop('wb42','drop-zone','#check42','#reset42','#fb42','4.2',5);
-setupDragDrop('wb21','drop-zone-img','#check21','#reset21','#fb21','2.1',12);
+
+// Initialize standard drag drops
+setupUniversalDragDrop('wb13', '.drop-zone:not([data-group])', '#check13', '#reset13', '#fb13', '1.3', 6);
+setupUniversalDragDrop('wb42', '.drop-zone[data-group="42"]', '#check42', '#reset42', '#fb42', '4.2', 5);
+setupUniversalDragDrop('wb21', '.drop-zone-img[data-group="21"]', '#check21', '#reset21', '#fb21', '2.1', 12);
+
+// SPECIAL HANDLING FOR EX 1.5 (SOCIAL POST WITH LIKES)
+(function initSocialPost() {
+  const bankId = 'wb15';
+  const zoneSelector = '.drop-zone[data-group="15"]';
+  const checkBtnId = 'check15';
+  const resetBtnId = 'reset15';
+  const fbId = 'fb15';
+  const taskKey = '1.5';
+  const total = 7;
+
+  let dragged = null;
+
+  // Setup Words
+  $$('#'+bankId+' .drag-word').forEach(function(w){
+    w.setAttribute('draggable', 'true');
+    w.addEventListener('dragstart',function(e){dragged=this;e.dataTransfer.setData('text',this.getAttribute('data-w'));setTimeout(function(){w.style.opacity='.5';},0);});
+    w.addEventListener('dragend',function(){this.style.opacity='1';dragged=null;});
+    
+    w.addEventListener('click', function(e){
+      e.preventDefault();
+      if(selectedMobileWord === this) {
+        this.classList.remove('selected-mobile'); selectedMobileWord = null;
+        $$(zoneSelector).forEach(function(z){z.classList.remove('tap-hover');});
+      } else {
+        if(selectedMobileWord) selectedMobileWord.classList.remove('selected-mobile');
+        this.classList.add('selected-mobile'); selectedMobileWord = this;
+        $$(zoneSelector+':not(.filled)').forEach(function(z){z.classList.add('tap-hover');});
+      }
+    });
+  });
+
+  // Setup Zones
+  $$(zoneSelector).forEach(function(z){
+    z.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('hover');});
+    z.addEventListener('dragleave',function(){this.classList.remove('hover');});
+    z.addEventListener('drop',function(e){e.preventDefault();this.classList.remove('hover');if(dragged&&!this.classList.contains('filled'))fillZone(this,dragged);});
+    
+    z.addEventListener('click', function(e){
+      e.preventDefault();
+      if(selectedMobileWord && !this.classList.contains('filled')) {
+        fillZone(this, selectedMobileWord);
+        selectedMobileWord.classList.remove('selected-mobile'); selectedMobileWord = null;
+        $$(zoneSelector).forEach(function(z){z.classList.remove('tap-hover');});
+      } else if(this.classList.contains('filled')) {
+        var wVal = this.getAttribute('data-w');
+        var bankWord = $$('#'+bankId+' .drag-word').find(function(el){return el.getAttribute('data-w')===wVal;});
+        if(bankWord) bankWord.classList.remove('placed');
+        this.textContent = '';
+        this.classList.remove('filled','ok','bad'); this.removeAttribute('data-w');
+      }
+    });
+  });
+
+  function fillZone(z,w){z.textContent=w.getAttribute('data-w');z.setAttribute('data-w',w.getAttribute('data-w'));z.classList.add('filled');w.classList.add('placed');w.classList.remove('selected-mobile');}
+
+  // CHECK BUTTON LOGIC FOR SOCIAL POST
+  $('#'+checkBtnId).addEventListener('click',function(){
+    var c=0;
+    $$(zoneSelector).forEach(function(z){
+      var a=z.getAttribute('data-ans'),v=z.getAttribute('data-w');
+      z.classList.remove('ok','bad');
+      if(v===a){z.classList.add('ok');c++;}
+      else if(v){z.classList.add('bad');}
+    });
+    
+    state.scores[taskKey]={c:c,t:total};
+    markDone(taskKey);
+    
+    if(c === total) {
+      fb(fbId,'ok','Post published successfully! 🎉');
+      // UPDATE LIKES AND COMMENTS
+      $('#likeCount').textContent = '142';
+      $('#commentCount').textContent = '24';
+      $('#likeBtnContainer').classList.add('liked');
+    } else {
+      fb(fbId,'warn','<b>'+c+'/'+total+'</b> correct. Check the red gaps and try posting again!');
+      // RESET LIKES IF WRONG
+      $('#likeCount').textContent = '0';
+      $('#commentCount').textContent = '0';
+      $('#likeBtnContainer').classList.remove('liked');
+    }
+  });
+  
+  // RESET BUTTON LOGIC FOR SOCIAL POST
+  $('#'+resetBtnId).addEventListener('click',function(){
+    $$(zoneSelector).forEach(function(z){
+      z.textContent='';
+      z.classList.remove('filled','ok','bad','tap-hover');
+      z.removeAttribute('data-w');
+    });
+    $$('#'+bankId+' .drag-word').forEach(function(w){
+      w.classList.remove('placed','selected-mobile');
+    });
+    selectedMobileWord = null; 
+    $(fbId).className='fb';
+    
+    // Reset likes too
+    $('#likeCount').textContent = '0';
+    $('#commentCount').textContent = '0';
+    $('#likeBtnContainer').classList.remove('liked');
+  });
+
+})();
+
 
 /* MC GENERIC */
 $$('.mcq').forEach(function(q){$$('.opt',q).forEach(function(o){o.addEventListener('click',function(){$$('.opt',q).forEach(function(x){x.classList.remove('sel');});o.classList.add('sel');});});});
@@ -958,7 +1098,6 @@ $('#check33').addEventListener('click',function(){
 });
 $('#reset33').addEventListener('click',function(){for(var i=1;i<=6;i++){$('#sent'+i).value='';$('#sent'+i).classList.remove('ok','bad');}$('#fb33').className='fb';});
 
-// EX 3.4 Logic with "Correct" buttons
 $$('.btn-correct').forEach(function(btn){
   btn.addEventListener('click', function(){
     var targetId = this.getAttribute('data-target');
@@ -971,16 +1110,11 @@ $$('.btn-correct').forEach(function(btn){
   });
 });
 
-// 3 Correct sentences: 3, 6, 8
 var V34=[
-  function(v){return /angrily/.test(v);}, // 1. angry -> angrily
-  function(v){return /perfectly/.test(v);}, // 2. perfect -> perfectly
-  function(v){return /^correct$/i.test(v);}, // 3. Correct
-  function(v){return /beautifully/.test(v);}, // 4. beautiful -> beautifully
-  function(v){return /helpful/.test(v)&&!/helpfully/.test(v);}, // 5. helpfully -> helpful
-  function(v){return /^correct$/i.test(v);}, // 6. Correct
-  function(v){return /fluently/.test(v);}, // 7. fluent -> fluently
-  function(v){return /^correct$/i.test(v);} // 8. Correct
+  function(v){return /angrily/.test(v);}, function(v){return /perfectly/.test(v);},
+  function(v){return /^correct$/i.test(v);}, function(v){return /beautifully/.test(v);},
+  function(v){return /helpful/.test(v)&&!/helpfully/.test(v);}, function(v){return /^correct$/i.test(v);},
+  function(v){return /fluently/.test(v);}, function(v){return /^correct$/i.test(v);}
 ];
 $('#check34').addEventListener('click',function(){
   var c=0,emp=0;V34.forEach(function(fn,i){var e=$('#mist'+(i+1)),v=e.value.trim().toLowerCase();if(!v)emp++;var ok=fn(v);e.classList.remove('ok','bad');e.classList.add(ok?'ok':'bad');if(ok)c++;});
@@ -1002,7 +1136,6 @@ var shopGrid=$('#shopGrid');var board=$('#outfitBoard');var draggedItem=null;
 var selectedMobileItem = null;
 
 $$('.builder-item').forEach(function(item){
-  // Desktop Drag
   item.addEventListener('dragstart',function(e){
     draggedItem=this;
     var img = this.querySelector('img');
@@ -1012,7 +1145,6 @@ $$('.builder-item').forEach(function(item){
   });
   item.addEventListener('dragend',function(){this.style.opacity='1';draggedItem=null;});
   
-  // Mobile Tap to Select
   item.addEventListener('click', function(e){
     if(draggedItem) return; 
     if(selectedMobileItem === this) {
@@ -1036,7 +1168,7 @@ function addToBoard(sourceItem){
     bItem.innerHTML='<img src="'+src+'"><div class="remove">×</div>';
   } else {
     var label = sourceItem.parentElement.querySelector('.grid-label').innerText;
-    bItem.innerHTML='<div style="width:100%;height:100%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#64748b;text-align:center;padding:4px">'+label+'</div><div class="remove">×</div>';
+    bItem.innerHTML='<div style="width:100%;height:100%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#64748b;text-align:center;padding:4px;font-weight:bold;">'+label+'</div><div class="remove">×</div>';
   }
   bItem.querySelector('.remove').addEventListener('click',function(){bItem.remove();});
   board.appendChild(bItem);
@@ -1067,7 +1199,6 @@ var chatInput = $('#chatInput');
 var chatMessages = $('#chatMessages');
 var chatSendBtn = $('#chatSendBtn');
 
-// Keywords for live checklist
 var keywords = {
   phrases: ["torn between", "not really my thing", "can't pull it off", "goes with everything", "never go wrong"],
   verbs: ["put on", "wrap up", "dress up", "go with", "try on"],
@@ -1089,9 +1220,7 @@ function checkLiveChecklist(text) {
   $('#chk3').className = scores.items >= 2 ? 'done' : '';
   $('#chk4').className = scores.feelings >= 1 ? 'done' : '';
 
-  if(scores.phrases >= 2 && scores.verbs >= 1 && scores.items >= 2 && scores.feelings >= 1) {
-    return true;
-  }
+  if(scores.phrases >= 2 && scores.verbs >= 1 && scores.items >= 2 && scores.feelings >= 1) return true;
   return false;
 }
 
@@ -1126,9 +1255,7 @@ chatInput.addEventListener('input', function(){
 });
 
 chatSendBtn.addEventListener('click', sendChatMessage);
-chatInput.addEventListener('keypress', function(e){
-  if(e.key === 'Enter') sendChatMessage();
-});
+chatInput.addEventListener('keypress', function(e){ if(e.key === 'Enter') sendChatMessage(); });
 
 if(state.open['chatReply']) {
   var msgDiv = document.createElement('div');
@@ -1147,11 +1274,8 @@ $('#save63').addEventListener('click',function(){
   markDone('6.3');fb('fb63','ok','Detective report saved to the teacher report ✓ Excellent analysis!');
 });
 
-/* IMAGE PLACEHOLDER LOGIC (Detective) */
 var imgEl=$('#fashionImg');
-if(imgEl && imgEl.getAttribute('src') && imgEl.getAttribute('src').length>0){
-  imgEl.style.display='block';
-}
+if(imgEl && imgEl.getAttribute('src') && imgEl.getAttribute('src').length>0){ imgEl.style.display='block'; }
 
 /* REPORT */
 var SCORE_LABELS={
@@ -1176,7 +1300,7 @@ var OPEN_LABELS=[
 ];
 function remaining(){return TASKS.filter(function(t){return !state.done[t];});}
 function buildReport(){
-  var L=['ОТЧЁТ UNIT 2 "IN FASHION" (V8.0 FINAL)','','Student: '+(state.name||'-'),'Date: '+new Date().toLocaleString('ru-RU'),'Progress: '+(TASKS.length-remaining().length)+'/'+TASKS.length,'','--- SCORES ---'];
+  var L=['ОТЧЁТ UNIT 2 "IN FASHION" (V12.0 FINAL)','','Student: '+(state.name||'-'),'Date: '+new Date().toLocaleString('ru-RU'),'Progress: '+(TASKS.length-remaining().length)+'/'+TASKS.length,'','--- SCORES ---'];
   Object.keys(SCORE_LABELS).forEach(function(k){var s=state.scores[k];L.push((s?s.c+'/'+s.t:'-')+'  '+SCORE_LABELS[k]);});
   L.push('','--- WRITTEN ---');['1.4','1.5P','2.1P','4.3','5.1','6.2','6.3'].forEach(function(t){L.push((state.done[t]?'[✓]':'[✗]')+'  '+TASK_LABELS[t]);});
   if(state.open['builder_items_count'])L.push('Builder items used: '+state.open['builder_items_count']);
@@ -1186,7 +1310,7 @@ function buildReport(){
 }
 $('#genReport').addEventListener('click',function(){var r=remaining();if(r.length){fb('fbRep','warn','Complete: '+r.map(function(t){return TASK_LABELS[t];}).join('; '));return;}$('#reportPre').textContent=buildReport();$('#reportPanel').classList.add('show');fb('fbRep','ok','Ready!');$('#reportPanel').scrollIntoView({behavior:'smooth'});});
 $('#copyRep').addEventListener('click',function(){var t=$('#reportPre').textContent;if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){fb('fbRep','ok','Copied ✓');});else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();fb('fbRep','ok','Copied ✓');}});
-$('#dlRep').addEventListener('click',function(){var b=new Blob([$('#reportPre').textContent],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Unit2_Report_V8.txt';a.click();});
+$('#dlRep').addEventListener('click',function(){var b=new Blob([$('#reportPre').textContent],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Unit2_Report_V12.txt';a.click();});
 $('#printRep').addEventListener('click',function(){window.print();});
 
 restore();$$('[data-open]').forEach(function(el){if(state.open[el.id])el.value=state.open[el.id];});nameInput.value=state.name||'';refresh();
